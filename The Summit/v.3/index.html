@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2c3550">
+<meta name="description" content="The Climb — a guided conversation journey up the mountain. Honest questions, Scripture at every stop, prayer at the summit.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="The Climb">
+<meta property="og:title" content="The Climb — Mt. Hermon">
+<meta property="og:description" content="A guided conversation journey, trailhead to summit. Draw a card, go deeper, end in prayer.">
+<title>The Climb — Mt. Hermon</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0;}
+  html{height:100%;overscroll-behavior:none;color-scheme:light;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Avenir Next','Segoe UI',Roboto,sans-serif;
+    color:#fbf7ee;min-height:100dvh;height:100%;overflow-x:hidden;position:relative;
+    display:flex;flex-direction:column;touch-action:manipulation;overscroll-behavior:none;
+  }
+  :root{
+    --glass:rgba(16,22,14,.4);
+    --glass-light:rgba(20,26,16,.26);
+    --hairline:rgba(255,255,255,.22);
+    --gold:#ffd98a;
+    --gold-soft:rgba(255,217,138,.35);
+  }
+  .serif{font-family:'Iowan Old Style','Palatino Linotype','Palatino','Charter','Georgia',serif;}
+
+  /* ================= SCENE ================= */
+  .scene,.stars,.orb,.cloudband,.birds,.mist,.flies,.shootwrap,.firewrap,.vignette{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .mtn{position:fixed;left:-10%;bottom:0;width:120%;z-index:0;pointer-events:none;}
+  .layer{position:fixed;inset:0;opacity:0;transition:opacity 1.3s ease;z-index:0;}
+  .layer.active{opacity:1;}
+  .l0{background:linear-gradient(180deg,#dfe0d8 0%,#f0e3c2 45%,#f4d9a6 78%,#e8cd9a 100%);}
+  .l1{background:linear-gradient(180deg,#cfdcb6 0%,#ece1b0 65%,#e3d199 100%);}
+  .l2{background:linear-gradient(180deg,#b6cea0 0%,#dfd89c 70%,#d8c889 100%);}
+  .l3{background:linear-gradient(180deg,#a3c4af 0%,#d6cf8c 70%,#d0bf7e 100%);}
+  .l4{background:linear-gradient(180deg,#cdb87f 0%,#e6bd72 65%,#dd9f57 100%);}
+  .l5{background:linear-gradient(180deg,#dd9a4e 0%,#e9c06a 55%,#e0a14c 100%);}
+  .l6{background:linear-gradient(180deg,#473a66 0%,#8a5560 45%,#c97a4e 80%,#dd8a52 100%);}
+  .l7{background:linear-gradient(180deg,#141b33 0%,#27294a 55%,#4a3a58 100%);}
+
+  /* stars */
+  .stars{opacity:0;transition:opacity 1.6s ease;
+    background-image:
+      radial-gradient(1.6px 1.6px at 12% 18%,#fff,transparent),
+      radial-gradient(1.4px 1.4px at 28% 9%,#fff,transparent),
+      radial-gradient(1.8px 1.8px at 44% 22%,#fff,transparent),
+      radial-gradient(1.3px 1.3px at 61% 12%,#fff,transparent),
+      radial-gradient(1.7px 1.7px at 73% 26%,#fff,transparent),
+      radial-gradient(1.4px 1.4px at 86% 14%,#fff,transparent),
+      radial-gradient(1.5px 1.5px at 20% 34%,#fff,transparent),
+      radial-gradient(1.3px 1.3px at 52% 38%,#fff,transparent),
+      radial-gradient(1.6px 1.6px at 90% 40%,#fff,transparent),
+      radial-gradient(1.2px 1.2px at 8% 45%,#fff,transparent),
+      radial-gradient(1.2px 1.2px at 67% 44%,#fff,transparent),
+      radial-gradient(1.4px 1.4px at 36% 6%,#fff,transparent);
+    animation:twinkle 5s ease-in-out infinite alternate;}
+  @keyframes twinkle{from{filter:brightness(.85)}to{filter:brightness(1.2)}}
+  body.dim-stars .stars{opacity:.35;}
+  body.full-stars .stars{opacity:1;}
+
+  /* shooting star */
+  .shoot{position:fixed;top:6%;left:0;width:90px;height:2px;opacity:0;
+    background:linear-gradient(90deg,transparent,#fff);border-radius:2px;
+    transform:rotate(32deg);}
+  body.full-stars .shoot{animation:shoot 9s ease-in 3s infinite;}
+  @keyframes shoot{
+    0%{opacity:0;transform:translate(105vw,0) rotate(32deg);}
+    3%{opacity:.9;}
+    9%{opacity:0;transform:translate(55vw,28vh) rotate(32deg);}
+    100%{opacity:0;transform:translate(55vw,28vh) rotate(32deg);}
+  }
+
+  /* sun / moon */
+  .orb .ball{position:absolute;width:80px;height:80px;border-radius:50%;left:8%;top:64%;
+    background:radial-gradient(circle at 35% 35%,#fff7e0,#ffd98a);
+    box-shadow:0 0 60px 18px rgba(255,216,120,.55);
+    transition:left 1.4s cubic-bezier(.4,.1,.2,1),top 1.4s cubic-bezier(.4,.1,.2,1),
+      width 1.4s ease,height 1.4s ease,background 1.4s ease,box-shadow 1.4s ease;}
+  body.stage-0 .ball{left:6%;top:66%;}
+  body.stage-1 .ball{left:18%;top:40%;}
+  body.stage-2 .ball{left:34%;top:22%;}
+  body.stage-3 .ball{left:50%;top:14%;}
+  body.stage-4 .ball{left:66%;top:24%;background:radial-gradient(circle at 35% 35%,#fff2cf,#ffc066);box-shadow:0 0 70px 22px rgba(255,170,80,.55);}
+  body.stage-5 .ball{left:80%;top:46%;width:96px;height:96px;background:radial-gradient(circle at 40% 40%,#ffd9a0,#f08a3c);box-shadow:0 0 90px 30px rgba(240,130,50,.5);}
+  body.stage-6 .ball{left:88%;top:72%;width:84px;height:84px;background:radial-gradient(circle at 40% 40%,#ffcf9e,#d9622f);box-shadow:0 0 80px 26px rgba(200,80,40,.45);}
+  body.stage-7 .ball{left:74%;top:12%;width:62px;height:62px;background:radial-gradient(circle at 38% 36%,#fdfbf0,#cfd4e6);box-shadow:0 0 46px 12px rgba(220,228,255,.45);}
+
+  /* clouds */
+  .cloud{position:fixed;height:26px;border-radius:30px;background:rgba(255,255,255,.7);
+    filter:blur(1.5px);opacity:var(--cloud-op,.7);transition:opacity 1.4s ease;}
+  .cloud::before,.cloud::after{content:"";position:absolute;background:inherit;border-radius:50%;}
+  .cloud::before{width:34px;height:34px;top:-16px;left:18%;}
+  .cloud::after{width:24px;height:24px;top:-10px;left:52%;}
+  .c1{width:120px;top:9%;animation:drift 110s linear infinite;}
+  .c2{width:86px;top:17%;animation:drift 150s linear infinite;animation-delay:-60s;}
+  .c3{width:150px;top:5%;animation:drift 180s linear infinite;animation-delay:-120s;opacity:calc(var(--cloud-op,.7)*.6);}
+  @keyframes drift{from{transform:translateX(-160px);}to{transform:translateX(110vw);}}
+  body{--cloud-op:.75;}
+  body.stage-5{--cloud-op:.45;}
+  body.stage-6{--cloud-op:.25;}
+  body.stage-7{--cloud-op:.07;}
+
+  /* birds */
+  .birds{opacity:0;transition:opacity 1.2s;}
+  body.stage-1 .birds,body.stage-2 .birds,body.stage-3 .birds,body.stage-4 .birds{opacity:.85;}
+  .bird{position:fixed;left:0;top:20%;animation:flyby 36s linear infinite;}
+  .bird svg{width:22px;height:9px;}
+  .bird.b2{top:24%;animation-delay:-14s;animation-duration:44s;transform:scale(.7);}
+  .bird.b3{top:16%;animation-delay:-27s;animation-duration:52s;transform:scale(.55);}
+  @keyframes flyby{
+    0%{transform:translate(-6vw,0);}
+    25%{transform:translate(22vw,-2vh);}
+    50%{transform:translate(50vw,1vh);}
+    75%{transform:translate(78vw,-2.5vh);}
+    100%{transform:translate(108vw,0);}
+  }
+  .bird path{stroke:rgba(40,48,40,.65);stroke-width:1.6;fill:none;stroke-linecap:round;}
+
+  /* mist (dawn) */
+  .mist{opacity:0;transition:opacity 1.5s;
+    background:linear-gradient(180deg,transparent 55%,rgba(255,255,255,.34) 72%,rgba(255,255,255,.12) 88%,transparent 100%);}
+  body.stage-0 .mist{opacity:1;}
+  body.stage-1 .mist{opacity:.45;}
+
+  /* fireflies (dusk) */
+  .flies{opacity:0;transition:opacity 1.5s;}
+  body.stage-5 .flies,body.stage-6 .flies{opacity:1;}
+  .fly{position:fixed;width:4px;height:4px;border-radius:50%;background:#ffe9a3;
+    box-shadow:0 0 8px 3px rgba(255,233,140,.7);animation:hoverfly 7s ease-in-out infinite alternate,blink 2.3s ease-in-out infinite;}
+  .fly:nth-child(1){left:14%;top:62%;}
+  .fly:nth-child(2){left:30%;top:70%;animation-delay:-2s,-1s;}
+  .fly:nth-child(3){left:58%;top:66%;animation-delay:-4s,-.4s;}
+  .fly:nth-child(4){left:76%;top:72%;animation-delay:-1s,-1.7s;}
+  .fly:nth-child(5){left:44%;top:75%;animation-delay:-5s,-.9s;}
+  @keyframes hoverfly{from{transform:translate(0,0);}to{transform:translate(26px,-34px);}}
+  @keyframes blink{0%,100%{opacity:.15;}50%{opacity:1;}}
+
+  /* mountains parallax layers */
+  .mtn svg{position:absolute;bottom:0;left:0;width:100%;height:auto;display:block;}
+  .mtn{transition:transform 1.4s cubic-bezier(.4,.1,.2,1);}
+  .mtn-far path{fill:var(--mtn-far);transition:fill 1.3s ease;}
+  .mtn-mid path{fill:var(--mtn-mid);transition:fill 1.3s ease;}
+  .mtn-near path{fill:var(--mtn-near);transition:fill 1.3s ease;}
+  .mtn-trees path{fill:var(--trees);transition:fill 1.3s ease;}
+  body{--mtn-far:#aab694;--mtn-mid:#8ca37a;--mtn-near:#6f8a5e;--trees:#59734c;}
+  body.stage-1{--mtn-far:#9fb58a;--mtn-mid:#80a06c;--mtn-near:#5f7d54;--trees:#4d6a44;}
+  body.stage-2{--mtn-far:#8fae84;--mtn-mid:#6f9663;--mtn-near:#54724b;--trees:#44603c;}
+  body.stage-3{--mtn-far:#8aa97f;--mtn-mid:#6a9160;--mtn-near:#4f6f48;--trees:#405c39;}
+  body.stage-4{--mtn-far:#a98e60;--mtn-mid:#8a6c42;--mtn-near:#6d4f2c;--trees:#5a401f;}
+  body.stage-5{--mtn-far:#a96f3d;--mtn-mid:#8a532a;--mtn-near:#66391a;--trees:#532e12;}
+  body.stage-6{--mtn-far:#6b4a60;--mtn-mid:#4d3147;--mtn-near:#332034;--trees:#271826;}
+  body.stage-7{--mtn-far:#2c3450;--mtn-mid:#20263d;--mtn-near:#141a2c;--trees:#0e1322;}
+
+  /* campfire */
+  .firewrap{opacity:0;transition:opacity 1s;}
+  body.mode-campfire .firewrap{opacity:1;}
+  .fireglow{position:fixed;left:50%;bottom:-4%;width:120vw;height:46vh;transform:translateX(-50%);
+    background:radial-gradient(ellipse at 50% 100%,rgba(255,150,60,.34),transparent 65%);
+    animation:glowpulse 2.6s ease-in-out infinite alternate;}
+  @keyframes glowpulse{from{opacity:.7;}to{opacity:1;}}
+  .fire{position:fixed;left:50%;bottom:7%;transform:translateX(-50%);width:70px;height:80px;}
+  .log{position:absolute;bottom:0;left:50%;width:64px;height:9px;border-radius:5px;background:#4a2e18;}
+  .log.lg1{transform:translateX(-50%) rotate(14deg);}
+  .log.lg2{transform:translateX(-50%) rotate(-12deg);background:#3c2412;}
+  .flame{position:absolute;bottom:6px;left:50%;border-radius:50% 50% 38% 38%/62% 62% 38% 38%;
+    transform-origin:50% 100%;}
+  .f1{width:34px;height:52px;margin-left:-17px;background:radial-gradient(circle at 50% 80%,#ffdf8a,#f5953c 60%,#d9622f);
+    animation:flick .42s ease-in-out infinite alternate;}
+  .f2{width:20px;height:34px;margin-left:-10px;background:radial-gradient(circle at 50% 80%,#fff3c0,#ffc257);
+    animation:flick .33s ease-in-out infinite alternate-reverse;}
+  @keyframes flick{from{transform:scaleY(1) scaleX(1) rotate(-2deg);}to{transform:scaleY(1.14) scaleX(.92) rotate(2.5deg);}}
+  .spark{position:absolute;bottom:40px;left:50%;width:3px;height:3px;border-radius:50%;background:#ffd98a;
+    animation:rise 2.8s ease-in infinite;}
+  .spark.s2{animation-delay:-1.1s;margin-left:8px;}
+  .spark.s3{animation-delay:-2s;margin-left:-9px;}
+  @keyframes rise{0%{opacity:0;transform:translateY(0);}12%{opacity:1;}100%{opacity:0;transform:translateY(-90px) translateX(10px);}}
+
+  /* dawn rays — morning mercies (Lam 3:23) */
+  .rays{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.8s ease;
+    background:conic-gradient(from 204deg at 8% 68%,
+      transparent 0deg,rgba(255,246,214,.16) 5deg,transparent 11deg,
+      rgba(255,246,214,.1) 17deg,transparent 25deg,
+      rgba(255,246,214,.13) 32deg,transparent 41deg,
+      rgba(255,246,214,.08) 48deg,transparent 56deg);}
+  body.stage-0 .rays{opacity:1;}
+  body.stage-1 .rays{opacity:.45;}
+
+  /* the glass cross — appears as you climb toward the summit */
+  .crosswrap{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 2s ease;}
+  body.stage-4 .crosswrap{opacity:.2;}
+  body.stage-5 .crosswrap{opacity:.45;}
+  body.stage-6 .crosswrap{opacity:.75;}
+  body.stage-7 .crosswrap{opacity:1;}
+  .cross{position:absolute;right:15%;bottom:33%;width:42px;height:62px;}
+  .cross i{position:absolute;display:block;border-radius:3px;
+    background:linear-gradient(160deg,rgba(255,255,255,.75),rgba(255,238,200,.28));
+    border:1px solid rgba(255,255,255,.45);
+    box-shadow:0 0 12px rgba(255,238,200,.55),0 0 30px rgba(255,214,140,.3);}
+  .cross .cv{left:50%;top:0;width:7px;height:100%;margin-left:-3.5px;}
+  .cross .ch{top:15px;left:50%;width:30px;height:7px;margin-left:-15px;}
+  .cross::after{content:"";position:absolute;left:50%;top:38%;width:170px;height:170px;
+    transform:translate(-50%,-50%);border-radius:50%;
+    background:radial-gradient(circle,rgba(255,242,205,.26),transparent 65%);}
+
+  /* transfiguration shimmer at the summit (Mt. Hermon, Matt 17) */
+  .summitglow{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 2.2s ease;
+    background:radial-gradient(ellipse at 76% 14%,rgba(243,239,255,.2),transparent 42%);}
+  body.stage-7 .summitglow{opacity:1;}
+  body.dim-stars .summitglow{opacity:.35;}
+
+  /* vignette */
+  .vignette{background:radial-gradient(ellipse at 50% 38%,transparent 52%,rgba(8,10,22,.42) 100%);
+    opacity:.14;transition:opacity 1.4s;}
+  body.stage-6 .vignette{opacity:.4;}
+  body.stage-7 .vignette{opacity:.55;}
+
+  /* legibility scrims — keep text readable no matter where the sun/moon sits */
+  .scrim-top,.scrim-bot{position:fixed;left:0;right:0;z-index:2;pointer-events:none;}
+  .scrim-top{top:0;height:34%;
+    background:linear-gradient(180deg,rgba(22,26,16,.52) 0%,rgba(22,26,16,.32) 50%,transparent 100%);}
+  .scrim-bot{bottom:0;height:22%;
+    background:linear-gradient(0deg,rgba(22,26,16,.46) 0%,rgba(22,26,16,.2) 55%,transparent 100%);}
+
+  /* ================= SCREENS ================= */
+  .screen{display:none;flex-direction:column;flex:1;min-height:0;z-index:3;position:relative;}
+  .screen.active{display:flex;}
+
+  /* ---- menu (Opal-style rows over the living scene) ---- */
+  #menu{align-items:center;justify-content:center;padding:22px 22px calc(26px + env(safe-area-inset-bottom));overflow-y:auto;}
+  .menu-inner{width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;}
+  .title-emblem{width:80px;height:80px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;line-height:0;margin-bottom:18px;
+    background:radial-gradient(circle,rgba(255,205,120,.2),transparent 72%);
+    border:1px solid var(--gold-soft);box-shadow:0 0 44px rgba(255,205,120,.28);}
+  .title-emblem svg{width:40px;height:40px;display:block;filter:drop-shadow(0 0 10px rgba(255,205,120,.5));}
+  #menu h1{font-size:2.5rem;letter-spacing:.5px;font-weight:600;
+    text-shadow:0 2px 18px rgba(0,0,0,.4);}
+  #menu .tagline{font-size:.85rem;opacity:.95;margin:8px 0 14px;font-weight:500;letter-spacing:.3px;
+    text-shadow:0 1px 3px rgba(15,18,10,.8),0 0 14px rgba(15,18,10,.4);}
+  .menuverse{font-size:.8rem;line-height:1.5;text-align:center;max-width:300px;margin:0 0 24px;
+    font-family:'Charter','Iowan Old Style','Georgia',serif;font-style:italic;color:rgba(253,249,239,.92);
+    text-shadow:0 1px 3px rgba(15,18,10,.85),0 0 14px rgba(15,18,10,.45);text-wrap:balance;}
+  .menuverse span{display:block;margin-top:6px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;
+    font-style:normal;font-size:.58rem;letter-spacing:2.2px;font-weight:700;text-transform:uppercase;
+    color:rgba(255,217,138,.95);}
+  .mode-card{width:100%;display:flex;align-items:center;gap:14px;text-align:left;
+    background:var(--glass);border:1px solid var(--hairline);border-radius:22px;
+    padding:16px;margin-bottom:12px;color:#fbf7ee;cursor:pointer;
+    -webkit-backdrop-filter:blur(24px) saturate(1.4);backdrop-filter:blur(24px) saturate(1.4);
+    box-shadow:0 8px 28px rgba(0,0,0,.18);
+    transition:transform .15s ease,background .2s,border-color .2s;}
+  .mode-card:active{transform:scale(.98);}
+  .mode-card:hover{background:rgba(28,36,24,.5);border-color:rgba(255,217,138,.45);}
+  .mode-icon{flex:0 0 46px;width:46px;height:46px;border-radius:15px;
+    background:linear-gradient(135deg,rgba(255,205,120,.22),rgba(200,116,59,.1));
+    border:1px solid rgba(255,217,138,.3);
+    display:flex;align-items:center;justify-content:center;line-height:0;align-self:center;}
+  .mode-icon svg{width:24px;height:24px;display:block;}
+  .mode-card > span:nth-of-type(2){min-width:0;flex:1;}
+  .mode-card b{display:block;font-size:.98rem;font-weight:700;letter-spacing:.1px;overflow-wrap:break-word;}
+  .mode-card span span{display:block;font-size:.75rem;opacity:.65;margin-top:3px;line-height:1.4;font-weight:500;overflow-wrap:break-word;}
+  .mode-chev{flex:0 0 auto;color:rgba(255,255,255,.35);font-size:1.3rem;font-weight:500;line-height:1;padding-left:2px;}
+  .menu-foot{margin-top:16px;display:flex;gap:12px;align-items:center;}
+  .linkish{background:var(--glass-light);border:1px solid var(--hairline);border-radius:40px;
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    color:#ffe6b0;font-size:.78rem;font-weight:600;letter-spacing:.3px;
+    cursor:pointer;padding:12px 20px;min-height:44px;}
+  .linkish:hover{background:rgba(255,255,255,.16);}
+  .resume-bar{width:100%;margin-bottom:13px;}
+  .resume-bar button{width:100%;}
+
+  /* ---- journey ---- */
+  header{display:flex;align-items:center;justify-content:space-between;z-index:3;
+    padding:calc(14px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) 0 calc(14px + env(safe-area-inset-left));}
+  header .h-title{text-align:center;flex:1;min-width:0;}
+  header h1{font-size:1.1rem;letter-spacing:.3px;font-weight:600;text-shadow:0 1px 10px rgba(0,0,0,.55);}
+  header .sub{font-size:.62rem;margin-top:3px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;opacity:.75;text-shadow:0 1px 6px rgba(0,0,0,.6);}
+  .icon-btn{width:44px;height:44px;border-radius:50%;background:var(--glass-light);border:1px solid var(--hairline);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    color:#fbf7ee;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 44px;
+    line-height:0;transition:background .2s;}
+  .icon-btn:hover{background:rgba(255,255,255,.18);}
+  .icon-btn svg{width:19px;height:19px;display:block;}
+  .icon-btn .off-slash{display:none;}
+  .icon-btn.muted .off-slash{display:block;}
+  .icon-btn.muted .wave{opacity:.25;}
+
+  /* quest map */
+  .trail{position:relative;margin:6px auto 0;padding:0 10px;z-index:3;width:100%;max-width:560px;}
+  .trail svg{width:100%;height:74px;display:block;overflow:visible;}
+  #trailPath{fill:none;stroke:rgba(255,255,255,.25);stroke-width:2;stroke-linecap:round;stroke-dasharray:.1 6;}
+  #trailFill{fill:none;stroke:var(--gold);stroke-width:2.6;stroke-linecap:round;
+    filter:drop-shadow(0 0 3px rgba(255,217,138,.9)) drop-shadow(0 0 10px rgba(255,190,90,.5));
+    transition:stroke-dashoffset .9s ease;}
+  .map-stop{fill:rgba(255,255,255,.2);stroke:rgba(255,255,255,.45);stroke-width:1.2;transition:fill .3s,stroke .3s;}
+  .map-stop.done{fill:var(--gold);stroke:var(--gold);filter:drop-shadow(0 0 4px rgba(255,217,138,.7));}
+  .map-stop.current{fill:#fff;stroke:var(--gold);stroke-width:2;
+    filter:drop-shadow(0 0 6px rgba(255,235,180,.95)) drop-shadow(0 0 14px rgba(255,200,100,.55));}
+  .map-tap{fill:transparent;cursor:pointer;}
+  .map-star{fill:rgba(255,255,255,.45);font-size:15px;transition:fill .3s;text-anchor:middle;}
+  .map-star.done,.map-star.current{fill:var(--gold);filter:drop-shadow(0 0 6px rgba(255,217,138,.95)) drop-shadow(0 0 14px rgba(255,190,90,.5));}
+  #hiker{transition:transform .9s ease;}
+  #hiker .dot{fill:#fff;stroke:#42301c;stroke-width:1.4;}
+  #hiker .pulse{fill:none;stroke:rgba(255,255,255,.75);stroke-width:1.6;animation:pulse 2s ease-out infinite;}
+  @keyframes pulse{0%{r:4;opacity:.9;}100%{r:12;opacity:0;}}
+
+  .hint{text-align:center;font-size:.76rem;padding:2px 24px 4px;z-index:3;min-height:17px;
+    color:#fdf9ef;text-shadow:0 1px 3px rgba(15,18,10,.85),0 0 12px rgba(15,18,10,.45);}
+
+  .stage-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:2px 20px 8px;z-index:3;width:100%;min-height:0;}
+  .chapter{font-size:.62rem;font-weight:700;letter-spacing:2.2px;margin-bottom:5px;text-align:center;text-transform:uppercase;
+    color:#fdf9ef;text-shadow:0 1px 2px rgba(15,18,10,.95),0 0 10px rgba(15,18,10,.65),0 0 22px rgba(15,18,10,.4);}
+  .section-label{font-size:1.22rem;font-weight:600;letter-spacing:.2px;color:#fff6e2;margin-bottom:14px;text-align:center;
+    text-shadow:0 1px 4px rgba(15,18,10,.8),0 0 16px rgba(15,18,10,.5);min-height:24px;
+    font-family:'Iowan Old Style','Palatino','Georgia',serif;text-wrap:balance;}
+
+  .card-wrap{width:100%;max-width:380px;height:52dvh;max-height:470px;min-height:300px;perspective:1500px;}
+  .card{position:relative;width:100%;height:100%;transform-style:preserve-3d;
+    transition:transform .65s cubic-bezier(.4,.2,.2,1);cursor:pointer;outline:none;}
+  .card:focus-visible{filter:drop-shadow(0 0 10px rgba(255,217,138,.9));}
+  .card.finishCard{cursor:default;}
+  .card.flipped{transform:rotateY(180deg);}
+  .card.deal{animation:deal .5s ease;}
+  @keyframes deal{from{opacity:0;transform:translateY(16px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:22px;display:flex;flex-direction:column;
+    box-shadow:0 20px 44px rgba(0,0,0,.4),0 2px 0 rgba(255,255,255,.15) inset;overflow:hidden;}
+  .back{
+    background:linear-gradient(165deg,rgba(30,40,24,.48),rgba(12,18,10,.62));
+    -webkit-backdrop-filter:blur(28px) saturate(1.4);backdrop-filter:blur(28px) saturate(1.4);
+    border:1px solid rgba(255,255,255,.2);
+    align-items:center;justify-content:center;text-align:center;padding:32px 24px;}
+  .back::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(circle at 50% 32%,rgba(255,205,120,.13),transparent 62%);}
+  .bno{position:relative;font-size:.64rem;letter-spacing:2.6px;font-weight:600;text-transform:uppercase;
+    color:rgba(255,236,200,.6);margin-bottom:18px;}
+  .halo{position:relative;width:118px;height:118px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;line-height:0;margin-bottom:18px;
+    background:radial-gradient(circle,rgba(255,205,120,.16),rgba(255,205,120,.04) 58%,transparent 72%);}
+  .halo::before{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid var(--gold-soft);}
+  .halo::after{content:"";position:absolute;inset:-13px;border-radius:50%;border:1px solid rgba(255,217,138,.12);}
+  .halo span{display:flex;align-items:center;justify-content:center;line-height:0;}
+  .halo svg{width:62px;height:62px;display:block;filter:drop-shadow(0 0 12px rgba(255,205,120,.5));}
+  .back h2{position:relative;font-size:1.5rem;letter-spacing:.2px;font-weight:600;color:#fdf6e6;
+    font-family:'Iowan Old Style','Palatino','Georgia',serif;}
+  .back .verse,.panel .verse{position:relative;font-size:.86rem;line-height:1.55;color:rgba(253,246,230,.85);
+    font-family:'Charter','Iowan Old Style','Georgia',serif;font-style:italic;
+    margin-top:14px;padding:0 12px;max-width:290px;text-wrap:balance;}
+  .back .vref,.panel .vref{position:relative;display:block;font-size:.6rem;letter-spacing:2px;font-weight:600;
+    text-transform:uppercase;color:rgba(255,217,138,.8);margin-top:9px;}
+  .back p#backSub{position:relative;font-size:.72rem;font-weight:500;color:rgba(253,246,230,.45);
+    margin-top:16px;padding:0 26px;line-height:1.45;}
+  .front{
+    background:linear-gradient(175deg,#fdfaf1,#f3ecdb);
+    border:1px solid rgba(255,255,255,.55);
+    transform:rotateY(180deg);padding:46px 28px 78px;color:#2e3a2a;
+    align-items:center;justify-content:center;text-align:center;}
+  .front .pin{position:absolute;top:24px;left:0;right:0;text-align:center;font-size:.62rem;
+    letter-spacing:2.6px;text-transform:uppercase;font-weight:700;color:#b97a3e;}
+  .front .q{font-size:1.42rem;line-height:1.5;font-weight:500;transition:opacity .15s;
+    font-family:'Charter','Iowan Old Style','Palatino','Georgia',serif;
+    text-wrap:balance;overflow-wrap:break-word;max-width:100%;}
+  .front .tip{position:absolute;bottom:0;left:0;right:0;padding:13px 26px 17px;font-size:.74rem;
+    color:#7d8669;font-style:italic;line-height:1.45;
+    border-top:1px solid rgba(110,100,70,.14);background:rgba(255,255,255,.3);}
+
+  .controls{display:flex;gap:10px;justify-content:center;align-items:center;
+    padding:8px 16px calc(22px + env(safe-area-inset-bottom));z-index:3;flex-wrap:wrap;}
+  button{font-family:inherit;font-weight:700;border:none;border-radius:40px;cursor:pointer;
+    transition:transform .12s,box-shadow .2s,background .2s,opacity .2s;}
+  button:active{transform:scale(.96);}
+  button:focus-visible{outline:2px solid #ffd98a;outline-offset:2px;}
+  .btn-primary{background:linear-gradient(135deg,#e0913f,#c06b33);color:#fff;padding:15px 30px;font-size:.92rem;
+    letter-spacing:.2px;min-height:50px;
+    box-shadow:0 8px 24px rgba(200,116,59,.42),0 1px 0 rgba(255,255,255,.28) inset;}
+  .btn-primary:hover{background:linear-gradient(135deg,#d4863a,#aa5c2a);}
+  .btn-ghost{background:var(--glass-light);color:#fbf7ee;padding:14px 20px;font-size:.85rem;font-weight:600;
+    border:1px solid var(--hairline);min-height:50px;
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);}
+  .btn-ghost:hover{background:rgba(255,255,255,.18);}
+  .btn-ghost:disabled{opacity:.3;cursor:default;}
+  .btn-reroll{width:50px;height:50px;padding:0;border-radius:50%;font-size:1.15rem;line-height:1;
+    background:var(--glass-light);color:#fbf7ee;border:1px solid var(--hairline);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);}
+  .btn-reroll:hover{background:rgba(255,255,255,.18);}
+
+  /* finish card */
+  .finish{text-align:center;padding:22px 22px 18px;overflow-y:auto;width:100%;height:100%;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;}
+  .finish h2{color:#2e3a2a;font-size:1.5rem;font-weight:600;margin-bottom:10px;font-family:'Iowan Old Style','Palatino','Georgia',serif;}
+  .finish p{color:#535e47;line-height:1.55;font-size:.86rem;margin-bottom:10px;}
+  .finish p.it{font-style:italic;opacity:.85;font-family:'Charter','Georgia',serif;}
+  .finish .notebox{width:100%;margin-top:6px;text-align:left;}
+  .finish label{display:block;font-size:.64rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;
+    color:#b97a3e;margin:10px 0 5px;}
+  .finish input,.finish textarea{width:100%;border:1px solid #e2d8c0;border-radius:14px;background:#fff;
+    padding:12px 14px;font-family:'Charter','Georgia',serif;font-size:16px;color:#2e3a2a;resize:none;
+    box-shadow:0 1px 4px rgba(80,70,40,.06) inset;}
+  .finish input:focus,.finish textarea:focus{outline:2px solid #c8743b;border-color:#c8743b;}
+  .finish textarea{height:74px;line-height:1.4;}
+  .finish .save-btn{margin-top:12px;width:100%;background:linear-gradient(135deg,#71855c,#56694a);color:#fff;
+    padding:13px;font-size:.85rem;font-weight:700;border-radius:40px;min-height:48px;
+    box-shadow:0 6px 18px rgba(86,105,74,.35);}
+  .finish .save-btn:disabled{background:#9aa88c;cursor:default;box-shadow:none;}
+
+  /* ---- notes screen ---- */
+  #notes{padding:18px 18px calc(24px + env(safe-area-inset-bottom));overflow-y:auto;align-items:center;}
+  .notes-inner{width:100%;max-width:420px;}
+  #notes h1{font-size:1.7rem;letter-spacing:.3px;font-weight:600;text-align:center;margin:6px 0 2px;text-shadow:0 2px 12px rgba(0,0,0,.4);}
+  #notes .nsub{text-align:center;font-size:.78rem;opacity:.75;font-weight:500;margin-bottom:18px;text-shadow:0 1px 4px rgba(0,0,0,.3);}
+  .note-card{background:linear-gradient(175deg,#fdfaf1,#f1e9d6);border-radius:20px;color:#2e3a2a;
+    padding:15px 17px;margin-bottom:12px;box-shadow:0 6px 20px rgba(0,0,0,.2);position:relative;}
+  .note-card .who{font-weight:700;font-size:.96rem;letter-spacing:.1px;overflow-wrap:break-word;padding-right:64px;}
+  .note-card .when{font-size:.7rem;color:#9a8a60;font-weight:600;letter-spacing:.3px;margin-top:2px;}
+  .note-card .what{font-family:'Charter','Georgia',serif;font-size:.94rem;line-height:1.5;margin-top:8px;font-style:italic;overflow-wrap:break-word;}
+  .note-del{position:absolute;top:6px;right:6px;min-width:34px;height:34px;border-radius:17px;background:rgba(0,0,0,.07);
+    color:#7a6a45;font-size:1rem;font-weight:700;line-height:1;padding:0 8px;}
+  .note-del:hover{background:rgba(160,60,40,.18);color:#a23c28;}
+  .note-del.confirm{background:rgba(160,60,40,.22);color:#a23c28;font-size:.68rem;letter-spacing:.5px;}
+  .notes-empty{text-align:center;opacity:.85;font-size:.86rem;line-height:1.6;padding:30px 10px;text-shadow:0 1px 4px rgba(0,0,0,.3);}
+  .notes-back{display:block;margin:8px auto 0;}
+
+  /* ---- v4: panels (forks & selah), pilgrim pack, wild cards ---- */
+  .card-wrap{position:relative;}
+  .panel{position:absolute;inset:0;border-radius:22px;display:none;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:30px 24px;
+    background:linear-gradient(165deg,rgba(30,40,24,.48),rgba(12,18,10,.62));
+    -webkit-backdrop-filter:blur(28px) saturate(1.4);backdrop-filter:blur(28px) saturate(1.4);
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:0 20px 44px rgba(0,0,0,.4),0 2px 0 rgba(255,255,255,.15) inset;}
+  .panel.show{display:flex;animation:deal .5s ease;}
+  .panel h2{font-size:1.4rem;color:#fdf6e6;font-weight:600;margin-bottom:6px;
+    font-family:'Iowan Old Style','Palatino','Georgia',serif;}
+  .fork-opt{width:100%;max-width:262px;display:flex;align-items:center;gap:12px;text-align:left;
+    background:rgba(255,255,255,.08);border:1px solid var(--hairline);border-radius:18px;
+    padding:14px 16px;margin-top:12px;color:#fbf7ee;cursor:pointer;}
+  .fork-opt:active{transform:scale(.97);}
+  .fork-opt:hover{background:rgba(255,255,255,.14);}
+  .fork-opt .ficon{flex:0 0 40px;height:40px;border-radius:12px;line-height:0;
+    background:linear-gradient(135deg,rgba(255,205,120,.2),rgba(200,116,59,.1));
+    border:1px solid rgba(255,217,138,.3);display:flex;align-items:center;justify-content:center;}
+  .fork-opt .ficon svg{width:22px;height:22px;display:block;}
+  .fork-opt b{display:block;font-size:.92rem;font-weight:700;}
+  .fork-opt span{display:block;font-size:.7rem;opacity:.65;margin-top:2px;}
+  .breath{width:84px;height:84px;border-radius:50%;border:1px solid var(--gold-soft);
+    background:radial-gradient(circle,rgba(255,205,120,.18),transparent 70%);
+    animation:breathe 8s ease-in-out infinite;margin:16px 0 4px;}
+  @keyframes breathe{0%,100%{transform:scale(.7);opacity:.65;}50%{transform:scale(1.12);opacity:1;}}
+  #packRow{display:none;justify-content:center;gap:10px;margin:8px auto 0;padding:9px 16px;
+    border-radius:40px;background:var(--glass-light);border:1px solid var(--hairline);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    width:max-content;z-index:3;position:relative;}
+  .pslot{width:26px;height:26px;border-radius:50%;border:1px dashed rgba(255,255,255,.3);
+    display:flex;align-items:center;justify-content:center;line-height:0;}
+  .pslot.got{border:1px solid var(--gold-soft);
+    background:radial-gradient(circle,rgba(255,205,120,.2),transparent 78%);}
+  .pslot svg{width:15px;height:15px;display:block;}
+  .pslot.newpulse{animation:ppulse .8s ease;}
+  @keyframes ppulse{0%{transform:scale(.4);}60%{transform:scale(1.35);}100%{transform:scale(1);}}
+  .front.wild{background:linear-gradient(175deg,#fbf3df,#f0e0bd);border-color:rgba(214,164,80,.5);}
+  .packgrid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:4px 0 8px;}
+  .pitem{width:82px;text-align:center;color:#4a5340;}
+  .pitem .pic{width:38px;height:38px;margin:0 auto 5px;border-radius:50%;border:1px solid #cdbd97;
+    display:flex;align-items:center;justify-content:center;line-height:0;
+    background:radial-gradient(circle,rgba(200,150,60,.12),transparent 78%);}
+  .pitem .pic svg{width:19px;height:19px;display:block;}
+  .pitem b{display:block;font-size:.6rem;letter-spacing:.2px;}
+  .pitem span{font-size:.52rem;color:#9a8a60;letter-spacing:.4px;}
+  .tname{font-family:'Iowan Old Style','Palatino','Georgia',serif;font-size:1.1rem;font-weight:600;
+    color:#7a5a28;margin:2px 0 10px;}
+  .bene{margin-top:12px;font-family:'Charter','Georgia',serif;font-style:italic;
+    font-size:.8rem;color:#5e6a4f;line-height:1.5;text-wrap:balance;}
+  .bene span{display:block;font-style:normal;font-size:.54rem;letter-spacing:2px;text-transform:uppercase;
+    color:#b97a3e;margin-top:5px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-weight:700;}
+
+  /* small phones (iPhone SE, narrow Androids) */
+  @media(max-width:374px){
+    #menu h1{font-size:1.9rem;letter-spacing:3px;}
+    .mode-card{padding:12px 13px;gap:11px;}
+    .mode-card b{font-size:.92rem;}
+    .mode-card span span{font-size:.7rem;}
+    .front{padding:30px 18px;}
+    .front .q{font-size:1.16rem;}
+    .front .tip{font-size:.72rem;left:18px;right:18px;}
+    .controls{gap:7px;padding-left:10px;padding-right:10px;}
+    .btn-primary{padding:13px 18px;font-size:.88rem;}
+    .btn-ghost{padding:12px 13px;font-size:.78rem;}
+    .halo{width:104px;height:104px;}
+    .halo svg{width:52px;height:52px;}
+    .back{padding:26px 18px;}
+    .back h2{font-size:1.3rem;}
+  }
+  @media(max-height:700px){
+    .card-wrap{height:48dvh;min-height:280px;}
+    .front .q{font-size:1.18rem;}
+    .orb .ball{width:64px;height:64px;}
+    .trail svg{height:60px;}
+    .halo{width:94px;height:94px;margin-bottom:14px;}
+    .halo svg{width:48px;height:48px;}
+    .bno{margin-bottom:12px;}
+    .back h2{font-size:1.3rem;}
+    .back .verse{font-size:.78rem;margin-top:10px;}
+    .back p#backSub{display:none;}
+  }
+  /* very short viewports / phones in landscape: let the screen scroll instead of crushing */
+  @media(max-height:560px){
+    .screen.active{overflow-y:auto;}
+    .card-wrap{height:300px;min-height:300px;max-height:none;flex:0 0 auto;}
+    .stage-area{flex:0 0 auto;justify-content:flex-start;padding-bottom:4px;}
+    .trail svg{height:48px;}
+    header h1{font-size:1rem;}
+    header .sub{display:none;}
+    .cloudband{display:none;}
+    .hint{padding-top:4px;}
+    .back{padding:20px 16px;}
+    .halo{width:80px;height:80px;margin-bottom:10px;}
+    .halo svg{width:42px;height:42px;}
+    .bno{margin-bottom:8px;}
+    .back h2{font-size:1.2rem;}
+    .back .verse,.back .vref,.back p#backSub{display:none;}
+    .controls{padding-top:10px;padding-bottom:calc(12px + env(safe-area-inset-bottom));}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01s !important;animation-iteration-count:1 !important;}
+    .card{transition:transform .25s;}
+    .layer{transition:opacity .3s;}
+    .orb .ball,.mtn,#trailFill,#hiker{transition:none;}
+  }
+</style>
+</head>
+<body class="stage-0">
+
+  <!-- ======= SCENERY ======= -->
+  <div class="scene">
+    <div class="layer l0 active"></div><div class="layer l1"></div><div class="layer l2"></div>
+    <div class="layer l3"></div><div class="layer l4"></div><div class="layer l5"></div>
+    <div class="layer l6"></div><div class="layer l7"></div>
+  </div>
+  <div class="orb"><div class="ball"></div></div>
+  <div class="stars"></div>
+  <div class="shootwrap"><div class="shoot"></div></div>
+  <div class="cloudband"><div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div></div>
+  <div class="birds">
+    <div class="bird"><svg viewBox="0 0 22 9"><path d="M1 7 Q6 1 11 7 Q16 1 21 7"/></svg></div>
+    <div class="bird b2"><svg viewBox="0 0 22 9"><path d="M1 7 Q6 1 11 7 Q16 1 21 7"/></svg></div>
+    <div class="bird b3"><svg viewBox="0 0 22 9"><path d="M1 7 Q6 1 11 7 Q16 1 21 7"/></svg></div>
+  </div>
+  <div class="mtn mtn-far" id="mtnFar"><svg viewBox="0 0 1200 260" preserveAspectRatio="none"><path d="M0 260 L0 150 L150 70 L290 160 L430 60 L600 170 L760 80 L920 170 L1080 90 L1200 160 L1200 260 Z"/></svg></div>
+  <div class="mtn mtn-mid" id="mtnMid"><svg viewBox="0 0 1200 230" preserveAspectRatio="none"><path d="M0 230 L0 160 L120 95 L260 165 L400 75 L560 170 L720 100 L880 175 L1020 110 L1200 170 L1200 230 Z"/></svg></div>
+  <div class="mtn mtn-near" id="mtnNear"><svg viewBox="0 0 1200 200" preserveAspectRatio="none"><path d="M0 200 L0 150 L180 60 L360 150 L520 90 L700 175 L880 95 L1050 165 L1200 110 L1200 200 Z"/></svg></div>
+  <div class="mtn mtn-trees" id="mtnTrees"><svg viewBox="0 0 1200 90" preserveAspectRatio="none"><path id="treePath" d=""/></svg></div>
+  <div class="rays" aria-hidden="true"></div>
+  <div class="crosswrap" aria-hidden="true"><div class="cross"><i class="cv"></i><i class="ch"></i></div></div>
+  <div class="summitglow" aria-hidden="true"></div>
+  <div class="mist"></div>
+  <div class="flies"><div class="fly"></div><div class="fly"></div><div class="fly"></div><div class="fly"></div><div class="fly"></div></div>
+  <div class="firewrap">
+    <div class="fireglow"></div>
+    <div class="fire">
+      <div class="spark"></div><div class="spark s2"></div><div class="spark s3"></div>
+      <div class="flame f1"></div><div class="flame f2"></div>
+      <div class="log lg1"></div><div class="log lg2"></div>
+    </div>
+  </div>
+  <div class="vignette"></div>
+  <div class="scrim-top" aria-hidden="true"></div>
+  <div class="scrim-bot" aria-hidden="true"></div>
+
+  <!-- ======= MENU ======= -->
+  <section id="menu" class="screen active" aria-label="Main menu">
+    <div class="menu-inner">
+      <div class="title-emblem" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" stroke="#ffd98a" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M6 50 L24 18 L33 33 L40 22 L58 50 Z"/><path d="M24 18 L28 25 L24 29 L20 25 Z" fill="#ffd98a" stroke="none" opacity=".85"/>
+        </svg>
+      </div>
+      <h1 class="serif">The Climb</h1>
+      <p class="tagline">A guided journey, trailhead to summit</p>
+      <p class="menuverse">"Like the dew of Hermon… for there the Lord bestows His blessing."<span>Psalm 133:3</span></p>
+
+      <div class="resume-bar" id="resumeBar" hidden>
+        <button class="btn-primary" id="resumeBtn" onclick="resumeClimb()">Resume your climb →</button>
+      </div>
+
+      <button class="mode-card" onclick="startMode('full')">
+        <span class="mode-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#ffd98a" stroke-width="1.8" stroke-linejoin="round"><path d="M2 20 L9 7 L12.5 13 L15 9 L22 20 Z"/></svg></span>
+        <span><b>The Full Climb</b><span>8 stops · 1-on-1 · trailhead to summit</span></span>
+        <span class="mode-chev" aria-hidden="true">›</span>
+      </button>
+      <button class="mode-card" onclick="startMode('quest')">
+        <span class="mode-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#ffd98a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21 V12"/><path d="M12 12 C12 8 8 7 5 4"/><path d="M12 12 C12 8 16 7 19 4"/><circle cx="5" cy="3.5" r="1.2"/><circle cx="19" cy="3.5" r="1.2"/></svg></span>
+        <span><b>Quest Mode</b><span>Forks in the trail · a pack to fill · a name to earn</span></span>
+        <span class="mode-chev" aria-hidden="true">›</span>
+      </button>
+      <button class="mode-card" onclick="startMode('campfire')">
+        <span class="mode-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#ffd98a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 C12 7 7 8.5 7 13 a5 5 0 0 0 10 0 C17 10 13 9 12 3 Z"/></svg></span>
+        <span><b>Campfire</b><span>Slow time around the fire · family &amp; friends</span></span>
+        <span class="mode-chev" aria-hidden="true">›</span>
+      </button>
+
+      <div class="menu-foot">
+        <button class="linkish" onclick="openNotes()">✦ Prayer Log</button>
+        <button class="icon-btn muted" id="sndBtnMenu" onclick="Snd.toggle()" aria-pressed="false" aria-label="Turn ambient sound on">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 5 L6 9 H3 v6 h3 l5 4 Z" fill="currentColor" stroke="none"/>
+            <path class="wave" d="M15 9 a4.5 4.5 0 0 1 0 6"/><path class="wave" d="M17.5 6.5 a8 8 0 0 1 0 11"/>
+            <path class="off-slash" d="M4 4 L20 20" stroke="#ff9d7a" stroke-width="2.4"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= JOURNEY ======= -->
+  <section id="journey" class="screen" aria-label="The climb">
+    <header>
+      <button class="icon-btn" onclick="exitToMenu()" aria-label="Back to menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 L8 12 L15 19"/></svg>
+      </button>
+      <div class="h-title">
+        <h1 class="serif">The Climb</h1>
+        <p class="sub" id="modeSub">Trailhead to summit</p>
+      </div>
+      <button class="icon-btn muted" id="sndBtn" onclick="Snd.toggle()" aria-pressed="false" aria-label="Turn ambient sound on">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 5 L6 9 H3 v6 h3 l5 4 Z" fill="currentColor" stroke="none"/>
+          <path class="wave" d="M15 9 a4.5 4.5 0 0 1 0 6"/><path class="wave" d="M17.5 6.5 a8 8 0 0 1 0 11"/>
+          <path class="off-slash" d="M4 4 L20 20" stroke="#ff9d7a" stroke-width="2.4"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="trail" id="trail">
+      <svg id="trailSvg" viewBox="0 0 360 84" aria-hidden="true">
+        <path id="trailPath" d="M 14 66 C 50 70 64 38 100 40 C 130 42 142 62 174 58 C 206 54 210 26 244 28 C 270 30 282 46 306 38 C 326 31 336 22 346 13"/>
+        <path id="trailFill" d="M 14 66 C 50 70 64 38 100 40 C 130 42 142 62 174 58 C 206 54 210 26 244 28 C 270 30 282 46 306 38 C 326 31 336 22 346 13"/>
+        <g id="mapStops"></g>
+        <g id="hiker"><circle class="pulse" r="4"/><circle class="dot" r="3.4"/></g>
+      </svg>
+    </div>
+
+    <div id="packRow" aria-label="Pilgrim's pack"></div>
+
+    <div class="hint" id="hint" aria-live="polite">Tap the card to begin the climb</div>
+
+    <div class="stage-area">
+      <div class="chapter" id="chapter"></div>
+      <div class="section-label" id="sectionLabel"></div>
+      <div class="card-wrap">
+        <div class="card" id="card" role="button" tabindex="0" aria-label="Question card, face down. Activate to reveal.">
+          <div class="face back">
+            <div class="bno" id="backNo">STOP N° 1</div>
+            <div class="halo" aria-hidden="true"><span id="backEmblem"></span></div>
+            <h2 id="backTitle">The Trailhead</h2>
+            <p class="verse" id="backVerse"></p>
+            <span class="vref" id="backVref"></span>
+            <p id="backSub">Tap to draw your first card</p>
+          </div>
+          <div class="face front">
+            <div class="pin" id="frontPin"></div>
+            <p class="q" id="question" aria-live="polite"></p>
+            <div class="tip" id="tip"></div>
+          </div>
+        </div>
+        <div class="panel" id="panel"></div>
+      </div>
+    </div>
+
+    <div class="controls" id="controls">
+      <button class="btn-ghost" onclick="goBack()" id="backBtn" aria-label="Previous stop">Back</button>
+      <button class="btn-reroll" onclick="reroll()" id="rerollBtn" aria-label="Draw a different question">↻</button>
+      <button class="btn-primary" onclick="next()" id="nextBtn" aria-label="Next stop">Continue</button>
+    </div>
+  </section>
+
+  <!-- ======= PRAYER LOG ======= -->
+  <section id="notes" class="screen" aria-label="Prayer log">
+    <div class="notes-inner">
+      <h1 class="serif">Prayer Log</h1>
+      <p class="nsub">What the guys have asked you to carry</p>
+      <div id="notesList"></div>
+      <button class="btn-ghost notes-back" onclick="closeNotes()">← Back</button>
+    </div>
+  </section>
+
+<script>
+/* =================== DATA =================== */
+const SECTIONS = [
+  { name:"The Trailhead", chapter:"CHAPTER 1 · SETTING OUT", label:"How are you, really?",
+    tip:"Low stakes. Let him warm up before you go deep.",
+    verse:"I lift up my eyes to the mountains — where does my help come from?", ref:"Psalm 121:1",
+    jesus:"He began with a question: “What do you seek?” · John 1:38",
+    questions:[
+      "How are you actually doing — not the version you'd give in a hallway?",
+      "What's one word for your week, and why that word?",
+      "What's been the best part of your last few days? The hardest?",
+      "If I followed you around yesterday, what would I have seen?",
+      "On a scale of 1–10, where's your tank right now — and what was it a week ago?",
+      "What's something good that happened lately that you haven't had a chance to tell anyone?"
+    ]},
+  { name:"Into the Woods", chapter:"CHAPTER 2 · WHERE YOU ARE WITH GOD", label:"Your walk with Jesus",
+    tip:"Let silence sit after this one. Don't rush to fill it.",
+    verse:"Remain in me, as I also remain in you.", ref:"John 15:4",
+    jesus:"He often withdrew to lonely places to pray · Luke 5:16",
+    questions:[
+      "What is God doing in your life this season?",
+      "Where did you see God today, or this week?",
+      "What's God been teaching you lately — and how are you responding to it?",
+      "When you pray right now, what does it sound like? Or is it quiet?",
+      "Does God feel close or far these days? What's behind that?",
+      "What part of your faith feels alive right now? What feels like going through the motions?",
+      "Is there anything you feel God nudging you toward that you've been avoiding?",
+      "What truth or Scripture do you keep coming back to this summer?",
+      "When was the last time you actually felt close to Him — what was happening?",
+      "Is there something you believed about God a year ago that's shifting?"
+    ]},
+  { name:"The Deep Woods", chapter:"CHAPTER 3 · AN HONEST READ", label:"What's really going on",
+    tip:"You're listening for what he hasn't said out loud yet.",
+    verse:"Search me, God, and know my heart; test me and know my anxious thoughts.", ref:"Psalm 139:23",
+    jesus:"“My soul is overwhelmed” — He said it out loud first · Mark 14:34",
+    questions:[
+      "What's challenging you right now — what's actually hard?",
+      "What's been weighing on you that you haven't told anyone?",
+      "What are you most excited about? Most anxious about?",
+      "When your mind wanders in a free moment, where does it go?",
+      "What's something you wish someone would just ask you about?",
+      "On a normal day, where's your mood — and what moves it up or down?",
+      "Is there anything you're pretending is fine that isn't?",
+      "Who or what back home is taking up space in your head?",
+      "What's a thought you keep having that you'd never say in a cabin full of campers?"
+    ]},
+  { name:"The River Crossing", chapter:"CHAPTER 4 · RHYTHM OF LIFE", label:"How you're holding up",
+    tip:"Run-down bodies make for run-down hearts. Check the basics.",
+    verse:"Come to me, all you who are weary and burdened, and I will give you rest.", ref:"Matthew 11:28",
+    jesus:"Tired from the journey, He sat down by the well · John 4:6",
+    questions:[
+      "How are you sleeping? Eating? Getting any real rest?",
+      "What's your body telling you right now — tired, restless, good?",
+      "Are you taking any time for yourself, or running on empty?",
+      "What does a day look like when you actually feel healthy here?",
+      "When did you last laugh hard, or move your body just for the fun of it?",
+      "Is there a habit here that's quietly wearing you down?"
+    ]},
+  { name:"The Open Meadow", chapter:"CHAPTER 5 · WHO KNOWS YOU", label:"Your people",
+    tip:"Roommates, tension, loneliness — it all lives here. Go slow.",
+    verse:"Two are better than one… if either of them falls down, one can help the other up.", ref:"Ecclesiastes 4:9–10",
+    jesus:"He chose twelve, that they might be with Him · Mark 3:14",
+    questions:[
+      "Who really knows you here? Who do you talk to when something's off?",
+      "What's your relationship like with your roommate?",
+      "Is there a relationship giving you life right now? One that's costing you?",
+      "Have you made any meaningful friendships this summer?",
+      "Do you feel known on this floor, or still on the outside of it?",
+      "Who back home are you missing, and how are you staying connected?",
+      "Is there tension with someone here that you've been avoiding dealing with?",
+      "Who on this floor would you want to know better — what's stopped you?"
+    ]},
+  { name:"The Golden Ridge", chapter:"CHAPTER 6 · LOOKING BACK ON TODAY", label:"The day's examen",
+    tip:"The heart of it — a rhythm he can learn to do on his own.",
+    verse:"His compassions never fail. They are new every morning; great is your faithfulness.", ref:"Lamentations 3:22–23",
+    jesus:"At the table, He gave thanks and broke the bread · Luke 24:30",
+    questions:[
+      "What did you do today that you'd want to do again tomorrow?",
+      "What did you do today that you wouldn't want to repeat?",
+      "When did you feel most alive today? Most drained?",
+      "Where did you sense God's presence — and where did you feel far from Him?",
+      "What are you grateful for today that you might've rushed past?",
+      "If today were a chapter, what would its title be?",
+      "What did someone do for you today that you didn't get to thank them for?"
+    ]},
+  { name:"The Summit Approach", chapter:"CHAPTER 7 · WHY YOU'RE HERE", label:"Your purpose this summer",
+    tip:"Reconnect him to what he came for.",
+    verse:"I press on toward the goal to win the prize for which God has called me heavenward.", ref:"Philippians 3:14",
+    jesus:"He set His face toward Jerusalem · Luke 9:51",
+    questions:[
+      "Why are you really here this summer — and is that reason holding up?",
+      "What did you hope would change in you by the end of summer?",
+      "If this summer went exactly how you needed it to, what's different about you in August?",
+      "How do you hope your relationship with Jesus grows while you're here?",
+      "Where do you sense God using you here in a way you didn't expect?",
+      "What would make this summer still matter ten years from now?"
+    ]},
+  { name:"The Summit", chapter:"CHAPTER 8 · UNDER THE STARS", label:"How I can carry you",
+    tip:"Close by carrying something for him. Be specific, then pray.",
+    verse:"Carry each other's burdens, and in this way you will fulfill the law of Christ.", ref:"Galatians 6:2",
+    jesus:"He took them up a high mountain to pray — and shone · Luke 9:28–29",
+    questions:[
+      "How can I support you this summer?",
+      "How can I be praying for you — specifically, this week?",
+      "What's one thing I could do that would actually help?",
+      "Is there anything you hoped I'd ask that I didn't?",
+      "What's one thing from this conversation you want me to follow up on next time?"
+    ]}
+];
+
+/* hand-drawn line emblems, one per section (national-park-stamp style) */
+const EM_OPEN = '<svg viewBox="0 0 64 64" fill="none" stroke="#ffd98a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">';
+const EMBLEMS = [
+  /* Trailhead: signpost */
+  EM_OPEN+'<path d="M32 54 V10"/><path d="M32 14 H16 L11 19 L16 24 H32 Z"/><path d="M32 30 H48 L53 35 L48 40 H32 Z"/><path d="M22 54 H42"/><path d="M14 50 q3 -3 6 0"/></svg>',
+  /* Into the Woods: pines */
+  EM_OPEN+'<path d="M24 12 L13 30 H35 Z"/><path d="M24 22 L11 42 H37 Z"/><path d="M24 42 V52"/><path d="M46 24 L38 37 H54 Z"/><path d="M46 32 L36 46 H56 Z"/><path d="M46 46 V52"/><path d="M8 56 H56"/></svg>',
+  /* Deep Woods: dense pines, path between */
+  EM_OPEN+'<path d="M16 18 L7 34 H25 Z"/><path d="M16 28 L5 46 H27 Z"/><path d="M48 18 L39 34 H57 Z"/><path d="M48 28 L37 46 H59 Z"/><path d="M16 46 V52 M48 46 V52"/><path d="M28 56 q4 -10 8 -16" stroke-dasharray="2.5 4"/></svg>',
+  /* River Crossing: water + stepping stones */
+  EM_OPEN+'<path d="M8 26 q6 -5 12 0 t12 0 t12 0 t12 0"/><path d="M8 36 q6 -5 12 0 t12 0 t12 0 t12 0"/><path d="M8 46 q6 -5 12 0 t12 0 t12 0 t12 0"/><ellipse cx="20" cy="41" rx="5" ry="3"/><ellipse cx="34" cy="31" rx="5" ry="3"/><ellipse cx="46" cy="41" rx="5" ry="3"/></svg>',
+  /* Open Meadow: sun over field */
+  EM_OPEN+'<circle cx="32" cy="26" r="9"/><path d="M32 10 V14 M32 38 V42 M16 26 H12 M52 26 H48 M21 15 L18 12 M46 15 L43 12"/><path d="M6 50 H58"/><path d="M16 50 V44 M24 50 V46 M42 50 V45 M50 50 V47"/></svg>',
+  /* Golden Ridge: low sun behind the ridge */
+  EM_OPEN+'<path d="M22 44 A10 10 0 0 1 42 44"/><path d="M32 26 V20 M18 32 L13 27 M46 32 L51 27"/><path d="M4 44 H60"/><path d="M8 56 L20 48 L30 54 L44 46 L56 56"/></svg>',
+  /* Summit Approach: switchbacks up the peak */
+  EM_OPEN+'<path d="M10 54 L32 14 L54 54 Z"/><path d="M30 54 L38 46 L26 38 L36 30 L32 22" stroke-dasharray="2.5 4"/></svg>',
+  /* Summit: the cross on the peak, under the stars */
+  EM_OPEN+'<path d="M8 56 L32 18 L56 56"/><path d="M32 18 V2"/><path d="M25 8 H39"/><circle cx="12" cy="14" r="1.3" fill="#ffd98a"/><circle cx="52" cy="10" r="1.3" fill="#ffd98a"/><circle cx="44" cy="22" r="1.1" fill="#ffd98a"/></svg>'
+];
+
+/* flame emblem for campfire cards */
+EMBLEMS.push(EM_OPEN+'<path d="M32 8 C32 18 20 21 20 33 a12 12 0 0 0 24 0 C44 25 34 22 32 8 Z"/><path d="M32 52 a7 7 0 0 1 -7 -7 c0 -5 5 -6 7 -11 2 5 7 6 7 11 a7 7 0 0 1 -7 7 Z"/></svg>');
+const WILD_EMBLEM = EM_OPEN+'<path d="M32 6 L37 27 L58 32 L37 37 L32 58 L27 37 L6 32 L27 27 Z"/><circle cx="32" cy="32" r="3"/></svg>';
+
+/* group prompts shown around the fire instead of counselor coaching */
+const CAMP_TIPS = [
+  "Pass the phone — whoever draws answers first, then anyone can jump in.",
+  "No fixing, no preaching. Just listen to whoever's talking.",
+  "It's okay to pass — draw another card instead.",
+  "Ask one follow-up question before the next draw.",
+  "Hand the next draw to whoever's been quietest."
+];
+
+/* the campfire deck — for family & friends, slow time around the fire */
+const CAMP_SECTION = {
+  name:"Around the Fire", label:"Around the fire", em:8, tip:"",
+  verse:"For where two or three gather in my name, there am I with them.", ref:"Matthew 18:20",
+  jesus:"He sat by a charcoal fire with His friends · John 21:9",
+  questions:[
+    "What's something the people around this fire don't know about you?",
+    "Tell the story behind your name.",
+    "Who shaped you into who you are — and do they know it?",
+    "What was your highest this week? Your lowest?",
+    "When did you last feel truly at peace?",
+    "What's a prayer God answered that you almost missed?",
+    "Where did you see something beautiful today?",
+    "What do you want the people here to pray about for you?",
+    "What's a tradition you want to carry for the rest of your life?",
+    "Who do you miss tonight?",
+    "What's the best advice you've ever been given?",
+    "When have you felt closest to God?",
+    "What are you slowly learning to let go of?",
+    "If tonight had a verse, what would it be?",
+    "What's one thing you'd thank someone here for, out loud, right now?",
+    "What would you do differently if you really believed God was with you in it?",
+    "What made you laugh hardest this summer?",
+    "Who in your life needs this fire tonight?"
+  ]
+};
+
+/* wild cards — drawn by surprise in every mode, for everyone at once */
+const WILDS = [
+  { name:"The Ebenezer", prompt:"When did God clearly show up — here, or ever? Tell it.",
+    verse:"Thus far the Lord has helped us.", ref:"1 Samuel 7:12",
+    tip:"Everyone answers this one." },
+  { name:"The Burden", prompt:"Name one thing you're carrying that someone here could help carry.",
+    verse:"Carry each other's burdens.", ref:"Galatians 6:2",
+    tip:"Whoever's ready goes first — then decide who helps." },
+  { name:"The Blessing", prompt:"Speak a short blessing over the person across from you.",
+    verse:"The Lord bless you and keep you.", ref:"Numbers 6:24",
+    tip:"Out loud. Don't rush it." },
+  { name:"The Thanks", prompt:"Three things from today you're thankful for — fast, no overthinking.",
+    verse:"He took bread, gave thanks, and broke it.", ref:"Luke 22:19",
+    tip:"Speed round. Everyone answers." }
+];
+
+/* pilgrim's pack — one item gathered per quest stop */
+const IT_OPEN = '<svg viewBox="0 0 24 24" fill="none" stroke="#ffd98a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">';
+const ITEMS = {
+  0:{ name:"The Lantern", ref:"Psalm 119:105",
+      icon:IT_OPEN+'<path d="M9 4 h6 M12 4 v3"/><rect x="8" y="7" width="8" height="9" rx="2.5"/><circle cx="12" cy="11.5" r="1.8"/><path d="M10 16 v3 h4 v-3"/></svg>' },
+  1:{ name:"The Vine", ref:"John 15:4",
+      icon:IT_OPEN+'<path d="M7 20 C9 13 13 8 18 4"/><path d="M11 12 q4 -1 4.5 -5"/><path d="M9 16 q-4 1 -5 -3"/></svg>' },
+  2:{ name:"The Stone", ref:"Psalm 139:23",
+      icon:IT_OPEN+'<ellipse cx="12" cy="14" rx="7" ry="5"/><path d="M8 12 q4 -3 8 0"/></svg>' },
+  3:{ name:"The Water", ref:"Matthew 11:28",
+      icon:IT_OPEN+'<path d="M12 4 C8.5 9.5 6.5 11.8 6.5 15 a5.5 5.5 0 0 0 11 0 C17.5 11.8 15.5 9.5 12 4 Z"/></svg>' },
+  4:{ name:"The Cord", ref:"Ecclesiastes 4:12",
+      icon:IT_OPEN+'<circle cx="9" cy="12" r="4.2"/><circle cx="15" cy="12" r="4.2"/></svg>' },
+  5:{ name:"The Bread", ref:"Lamentations 3:23",
+      icon:IT_OPEN+'<ellipse cx="12" cy="13" rx="8" ry="5"/><path d="M8.5 10.5 v5 M12 9.5 v7 M15.5 10.5 v5"/></svg>' },
+  7:{ name:"The Cross", ref:"Galatians 6:2",
+      icon:IT_OPEN+'<path d="M12 4 v16 M7 9 h10"/></svg>' }
+};
+
+/* quest flow: stops, forks, and a selah */
+const questFlow = () => [
+  { t:'stop', sec:0,  st:0 },
+  { t:'fork', st:1, opts:[ [1,"Into the Woods","your walk with Jesus"], [2,"The Deep Woods","what's underneath"] ] },
+  { t:'stop', sec:-1, st:2 },
+  { t:'selah', st:4 },
+  { t:'fork', st:5, opts:[ [3,"The River","rest & the body"], [4,"The Meadow","your people"] ] },
+  { t:'stop', sec:-1, st:5 },
+  { t:'stop', sec:5,  st:6 },
+  { t:'stop', sec:7,  st:7 }
+];
+const TNAMES = { '1-3':"Riverwalker", '1-4':"Vinekeeper", '2-3':"Stonecrosser", '2-4':"Brotherkeeper" };
+
+/* trail definitions (full climb) */
+const TRAILS = {
+  full: [{s:0,st:0},{s:1,st:1},{s:2,st:2},{s:3,st:3},{s:4,st:4},{s:5,st:5},{s:6,st:6},{s:7,st:7}]
+};
+const MODE_SUBS = { full:"1-on-1 · trailhead to summit", quest:"A pilgrim's quest · forks & discoveries", campfire:"Slow time · around the fire" };
+
+/* real-time sky for the menu */
+function skyNow(){
+  const h = new Date().getHours();
+  return h<5?7 : h<7?0 : h<10?1 : h<13?3 : h<16?4 : h<19?5 : h<21?6 : 7;
+}
+/* haptics (no-op where unsupported, e.g. iOS Safari) */
+function buzz(p){ try{ if(navigator.vibrate) navigator.vibrate(p); }catch(e){} }
+
+/* =================== STATE =================== */
+const state = { mode:null, trail:TRAILS.full, t:0, stage:0, started:false, currentQ:"", drawn:0,
+  flow:[], fi:0, choices:[], pack:[], qsec:0, wild:null, trailName:"", _selahT:null };
+const $ = id => document.getElementById(id);
+const card = $('card');
+
+/* =================== SCENERY =================== */
+function buildTrees(){
+  let d = "M0 90 L0 64 ";
+  let x = 0;
+  while(x < 1200){
+    const w = 26 + Math.random()*30, h = 26 + Math.random()*34;
+    d += "L"+(x+w*0.5).toFixed(0)+" "+(64-h).toFixed(0)+" L"+(x+w).toFixed(0)+" 64 ";
+    x += w;
+  }
+  d += "L1200 90 Z";
+  $('treePath').setAttribute('d', d);
+}
+
+function setScene(stage){
+  state.stage = stage;
+  const b = document.body;
+  b.className = b.className.replace(/stage-\d+/g,'').replace(/\b(dim-stars|full-stars|mode-campfire)\b/g,'').trim();
+  b.classList.add('stage-'+stage);
+  if(stage===6) b.classList.add('dim-stars');
+  if(stage===7) b.classList.add('full-stars');
+  if(state.mode==='campfire') b.classList.add('mode-campfire');
+  document.querySelectorAll('.layer').forEach((l,i)=>l.classList.toggle('active', i===stage));
+  const THEME=['#bfc4ae','#a8bb8f','#92ad80','#83a78d','#a8965f','#b67a3c','#473a66','#141b33'];
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', THEME[stage]);
+  /* parallax: layers travel sideways as you climb */
+  const px = state.mode==='campfire' ? 4 : state.mode==='quest' ? state.fi : state.t;
+  $('mtnFar').style.transform   = 'translateX('+(-px*4)+'px)';
+  $('mtnMid').style.transform   = 'translateX('+(-px*8)+'px)';
+  $('mtnNear').style.transform  = 'translateX('+(-px*13)+'px)';
+  $('mtnTrees').style.transform = 'translateX('+(-px*19)+'px)';
+  Snd.setScene();
+}
+
+/* =================== QUEST MAP =================== */
+let mapPts = [];
+function buildMap(){
+  const n = state.trail.length;
+  const path = $('trailPath'), L = path.getTotalLength();
+  const g = $('mapStops'); g.innerHTML = '';
+  mapPts = [];
+  const NS = 'http://www.w3.org/2000/svg';
+  for(let i=0;i<n;i++){
+    const p = path.getPointAtLength(L*i/(n-1));
+    mapPts.push(p);
+    if(i===n-1){
+      const t = document.createElementNS(NS,'text');
+      t.setAttribute('x',p.x); t.setAttribute('y',p.y+5);
+      t.setAttribute('class','map-star'); t.textContent='★';
+      g.appendChild(t);
+    } else {
+      const c = document.createElementNS(NS,'circle');
+      c.setAttribute('cx',p.x); c.setAttribute('cy',p.y); c.setAttribute('r',5);
+      c.setAttribute('class','map-stop');
+      g.appendChild(c);
+    }
+    const tap = document.createElementNS(NS,'circle');
+    tap.setAttribute('cx',p.x); tap.setAttribute('cy',p.y); tap.setAttribute('r',15);
+    tap.setAttribute('class','map-tap');
+    (function(i){ tap.addEventListener('click', function(){ jumpTo(i); }); })(i);
+    g.appendChild(tap);
+  }
+  const fill = $('trailFill');
+  fill.style.strokeDasharray = L;
+  fill.style.strokeDashoffset = L;
+}
+
+function updateTrail(){
+  if(state.mode && state.mode!=='full') return;
+  if(!mapPts.length) return;
+  const n = state.trail.length;
+  const path = $('trailPath'), L = path.getTotalLength();
+  const prog = (state.started && n>1) ? state.t/(n-1) : 0;
+  $('trailFill').style.strokeDashoffset = L*(1-prog);
+  const stops = $('mapStops').querySelectorAll('.map-stop,.map-star');
+  stops.forEach((el,i)=>{
+    el.classList.remove('done','current');
+    if(i<state.t) el.classList.add('done');
+    if(i===state.t && state.started) el.classList.add('current');
+  });
+  const p = mapPts[state.t] || mapPts[0];
+  if(p) $('hiker').style.transform = 'translate('+p.x+'px, '+p.y+'px)';
+}
+
+function jumpTo(i){
+  if(state.mode!=='full' || card.classList.contains('finishCard') || i===state.t) return;
+  state.started = true;
+  goTo(i);
+}
+
+/* =================== GAME FLOW =================== */
+function pick(arr, avoid){
+  if(arr.length===1) return arr[0];
+  let q; do{ q = arr[Math.floor(Math.random()*arr.length)]; }while(q===avoid);
+  return q;
+}
+
+function sectionAt(){
+  if(state.mode==='campfire') return CAMP_SECTION;
+  if(state.mode==='quest') return SECTIONS[state.qsec];
+  return SECTIONS[state.trail[state.t].s];
+}
+
+function stopNum(){
+  let n=0;
+  for(let i=0;i<=state.fi && i<state.flow.length;i++) if(state.flow[i].t==='stop') n++;
+  return n;
+}
+function questStopsTotal(){ return state.flow.filter(f=>f.t==='stop').length; }
+
+function chapterText(){
+  if(state.mode==='campfire') return "AROUND THE FIRE · CARD "+state.drawn;
+  if(state.mode==='quest') return "THE QUEST · STOP "+stopNum()+" OF "+questStopsTotal();
+  return SECTIONS[state.trail[state.t].s].chapter;
+}
+
+function maybeWild(p){
+  if(typeof window!=='undefined' && window.__noWild){ state.wild=null; return; }
+  state.wild = (Math.random()<p) ? WILDS[Math.floor(Math.random()*WILDS.length)] : null;
+}
+
+function loadStop(deal){
+  const w = state.wild;
+  const s = sectionAt();
+  const front = card.querySelector('.front');
+  if(w){
+    front.classList.add('wild');
+    state.currentQ = w.prompt;
+    $('chapter').textContent = "✦ WILD CARD";
+    $('sectionLabel').textContent = w.name;
+    $('frontPin').textContent = "✦ "+w.name;
+    $('question').textContent = w.prompt;
+    $('tip').textContent = w.tip;
+    $('backTitle').textContent = w.name;
+    $('backVerse').textContent = '“'+w.verse+'”';
+    $('backVref').textContent = w.ref;
+    $('backNo').textContent = "✦ WILD CARD";
+    $('backSub').textContent = "A card for everyone at once";
+    $('backEmblem').innerHTML = WILD_EMBLEM;
+  } else {
+    front.classList.remove('wild');
+    state.currentQ = pick(s.questions, null);
+    $('chapter').textContent = chapterText();
+    $('sectionLabel').textContent = s.label;
+    $('frontPin').textContent = s.name;
+    $('question').textContent = state.currentQ;
+    $('tip').textContent = state.mode==='campfire'
+      ? CAMP_TIPS[Math.floor(Math.random()*CAMP_TIPS.length)] : s.tip;
+    $('backTitle').textContent = s.name;
+    $('backVerse').textContent = '“'+s.verse+'”';
+    $('backVref').textContent = s.ref;
+    $('backSub').textContent = s.jesus;
+    $('backEmblem').innerHTML = EMBLEMS[s.em!==undefined ? s.em : SECTIONS.indexOf(s)];
+    if(state.mode==='campfire'){
+      $('backNo').textContent = "AROUND THE FIRE";
+    } else if(state.mode==='quest'){
+      $('backNo').textContent = "THE QUEST · STOP "+stopNum()+" OF "+questStopsTotal();
+    } else {
+      $('backNo').textContent = "STOP N° "+(state.t+1)+" OF "+state.trail.length;
+    }
+  }
+  if(state.mode==='campfire'){
+    $('backBtn').style.display = '';
+    $('backBtn').disabled = false;
+    $('backBtn').textContent = "End the Night";
+    $('nextBtn').textContent = "Draw Next";
+  } else if(state.mode==='quest'){
+    $('backBtn').style.display = 'none';
+    const f = state.flow[state.fi];
+    $('nextBtn').textContent = w ? "Continue" : (f && f.sec===7 ? "Summit ★" : "Continue");
+  } else {
+    $('backBtn').style.display = '';
+    $('backBtn').disabled = (state.t===0);
+    $('backBtn').textContent = "Back";
+    $('nextBtn').textContent = w ? "Continue" : (state.t===state.trail.length-1 ? "Summit ★" : "Continue");
+  }
+  card.setAttribute('aria-label','Question card for '+(w?w.name:s.name)+', face down. Activate to reveal.');
+  if(deal){ card.classList.remove('deal'); void card.offsetWidth; card.classList.add('deal'); }
+  saveSession();
+}
+
+function flip(){
+  if(card.classList.contains('finishCard')) return;
+  if(!state.started){
+    state.started = true;
+    loadStop(false); updateTrail();
+  }
+  card.classList.toggle('flipped');
+  Snd.tick();
+  buzz(state.wild ? [8,40,8] : 8);
+  const open = card.classList.contains('flipped');
+  $('hint').textContent = open ? "Take your time. Tap the card to flip it back." : "Tap the card to reveal the question";
+  card.setAttribute('aria-label', open ? 'Question: '+state.currentQ : 'Question card, face down. Activate to reveal.');
+}
+
+function reroll(){
+  if(card.classList.contains('finishCard')) return;
+  if(state.wild){ /* trade the wild card for a normal question */
+    state.wild = null;
+    card.classList.remove('flipped');
+    setTimeout(()=>loadStop(true), 320);
+    return;
+  }
+  const s = sectionAt();
+  state.currentQ = pick(s.questions, state.currentQ);
+  if(!card.classList.contains('flipped')){ flip(); return; }
+  const q = $('question');
+  q.style.opacity = 0;
+  setTimeout(()=>{ q.textContent = state.currentQ; q.style.opacity = 1;
+    card.setAttribute('aria-label','Question: '+state.currentQ); }, 150);
+  Snd.tick();
+}
+
+function goTo(i){
+  maybeWild((i===0 || i===state.trail.length-1) ? 0 : .18);
+  state.t = i;
+  card.classList.remove('flipped');
+  $('hint').textContent = "Tap the card to reveal the question";
+  setScene(state.trail[i].st);
+  Snd.steps(); buzz(10);
+  updateTrail();
+  setTimeout(()=>{ loadStop(true); updateTrail(); }, 360);
+}
+
+function next(){
+  if(card.classList.contains('finishCard')) return;
+  /* a wild card is an interlude — Continue returns to the real stop */
+  if(state.wild && state.mode!=='campfire'){
+    state.wild = null;
+    card.classList.remove('flipped');
+    $('hint').textContent = "Tap the card to reveal the question";
+    setTimeout(()=>loadStop(true), 360);
+    return;
+  }
+  if(state.mode==='campfire'){ drawCampfire(); return; }
+  if(state.mode==='quest'){
+    card.classList.remove('flipped');
+    setTimeout(questAdvance, 320);
+    return;
+  }
+  if(state.t >= state.trail.length-1){ showFinish(); return; }
+  goTo(state.t+1);
+}
+function goBack(){
+  if(card.classList.contains('finishCard')) return;
+  if(state.mode==='campfire'){ showFinish(); return; }
+  if(state.mode==='quest' || state.t<=0) return;
+  goTo(state.t-1);
+}
+
+function drawCampfire(){
+  const wasFlipped = card.classList.contains('flipped');
+  maybeWild(state.drawn<1 ? 0 : .25);
+  state.drawn++;
+  card.classList.remove('flipped');
+  setTimeout(()=>{ loadStop(true); }, wasFlipped ? 360 : 80);
+}
+
+/* =================== QUEST ENGINE =================== */
+function showPanel(html, cls){
+  const p = $('panel');
+  p.className = 'panel show '+cls;
+  p.innerHTML = html;
+  card.style.display = 'none';
+  $('controls').style.visibility = 'hidden';
+}
+function hidePanel(){
+  const p = $('panel');
+  p.className = 'panel'; p.innerHTML = '';
+  card.style.display = '';
+  $('controls').style.visibility = '';
+}
+
+function forkHTML(f){
+  return '<div class="bno">THE TRAIL SPLITS</div>'+
+    '<h2>Choose your path</h2>'+
+    f.opts.map((o,i)=>
+      '<button class="fork-opt" onclick="chooseFork('+i+')">'+
+      '<span class="ficon" aria-hidden="true">'+EMBLEMS[o[0]]+'</span>'+
+      '<span><b>'+o[1]+'</b><span>'+o[2]+'</span></span></button>'
+    ).join('');
+}
+const SELAH_HTML =
+  '<div class="bno">SELAH</div><h2>Be still.</h2>'+
+  '<div class="breath" aria-hidden="true"></div>'+
+  '<p class="verse">“Be still, and know that I am God.”</p>'+
+  '<span class="vref">Psalm 46:10</span>'+
+  '<button class="btn-ghost" id="selahGo" onclick="selahContinue()" '+
+  'style="margin-top:18px;opacity:0;pointer-events:none;transition:opacity 1.2s;">Continue</button>';
+
+function renderFlow(walk){
+  const f = state.flow[state.fi];
+  hidePanel();
+  setScene(f.st);
+  if(walk){ Snd.steps(); buzz(10); }
+  if(f.t==='stop'){
+    state.qsec = f.sec;
+    maybeWild((state.fi===0 || f.sec===7) ? 0 : .2);
+    card.classList.remove('flipped');
+    $('hint').textContent = "Tap the card to reveal the question";
+    setTimeout(()=>loadStop(true), walk ? 360 : 60);
+  } else if(f.t==='fork'){
+    $('chapter').textContent = ""; $('sectionLabel').textContent = "";
+    $('hint').textContent = "There's no wrong trail.";
+    showPanel(forkHTML(f), 'fork');
+  } else { /* selah */
+    $('chapter').textContent = ""; $('sectionLabel').textContent = "";
+    $('hint').textContent = "Breathe. No rush.";
+    showPanel(SELAH_HTML, 'selah');
+    clearTimeout(state._selahT);
+    state._selahT = setTimeout(()=>{
+      const b = $('selahGo');
+      if(b){ b.style.opacity = 1; b.style.pointerEvents = 'auto'; }
+    }, 8000);
+  }
+}
+
+function questAdvance(){
+  const f = state.flow[state.fi];
+  if(f && f.t==='stop') collectItem(f.sec);
+  state.fi++;
+  if(state.fi >= state.flow.length){ showFinish(); return; }
+  renderFlow(true);
+}
+
+function chooseFork(i){
+  const f = state.flow[state.fi];
+  if(!f || f.t!=='fork') return;
+  const sec = f.opts[i][0];
+  state.choices.push(sec);
+  for(let j=state.fi+1; j<state.flow.length; j++){
+    if(state.flow[j].t==='stop' && state.flow[j].sec<0){ state.flow[j].sec = sec; break; }
+  }
+  Snd.tick(); buzz(12);
+  state.fi++;
+  renderFlow(true);
+}
+
+function selahContinue(){
+  const f = state.flow[state.fi];
+  if(!f || f.t!=='selah') return;
+  clearTimeout(state._selahT);
+  state.fi++;
+  renderFlow(true);
+}
+
+function collectItem(sec){
+  if(state.pack.includes(sec) || !ITEMS[sec]) return;
+  state.pack.push(sec);
+  renderPack(true);
+  Snd.collect(); buzz(18);
+}
+function renderPack(pulse){
+  const r = $('packRow');
+  r.innerHTML = '';
+  const total = questStopsTotal() || 5;
+  for(let i=0;i<total;i++){
+    const d = document.createElement('div');
+    d.className = 'pslot';
+    const sec = state.pack[i];
+    if(sec !== undefined){
+      d.classList.add('got');
+      d.innerHTML = ITEMS[sec].icon;
+      if(pulse && i===state.pack.length-1) d.classList.add('newpulse');
+    }
+    r.appendChild(d);
+  }
+}
+
+/* =================== MODES / SCREENS =================== */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+}
+
+function startMode(mode, restore){
+  state.mode = mode;
+  state.trail = TRAILS.full;
+  state.t = restore ? restore.t : 0;
+  state.started = restore ? restore.started : false;
+  state.drawn = 0;
+  state.wild = null;
+  state.flow = []; state.fi = 0; state.choices = []; state.pack = []; state.trailName = "";
+  $('modeSub').textContent = MODE_SUBS[mode];
+  $('trail').style.display = mode==='full' ? '' : 'none';
+  $('packRow').style.display = mode==='quest' ? 'flex' : 'none';
+  resetCard();
+  if(mode==='campfire'){
+    state.drawn = 1;
+    state.started = true;
+    setScene(7);
+    $('hint').textContent = "Tap the card to draw from the deck";
+    loadStop(true);
+  } else if(mode==='quest'){
+    state.flow = questFlow();
+    state.started = true;
+    renderPack(false);
+    renderFlow(false);
+    $('hint').textContent = "Tap the card to begin the quest";
+  } else {
+    setScene(state.trail[state.t].st);
+    buildMap();
+    $('hint').textContent = "Tap the card to begin the climb";
+    loadStop(true);
+    updateTrail();
+  }
+  showScreen('journey');
+  saveSession();
+}
+
+function resetCard(){
+  hidePanel();
+  card.classList.remove('finishCard','flipped');
+  const backFace = card.querySelector('.back'); backFace.style.display = '';
+  const front = card.querySelector('.front');
+  front.classList.remove('wild');
+  front.style.transform = '';
+  front.innerHTML =
+    '<div class="pin" id="frontPin"></div><p class="q" id="question" aria-live="polite"></p><div class="tip" id="tip"></div>';
+  $('controls').innerHTML =
+    '<button class="btn-ghost" onclick="goBack()" id="backBtn" aria-label="Previous stop">Back</button>'+
+    '<button class="btn-reroll" onclick="reroll()" id="rerollBtn" aria-label="Draw a different question">↻</button>'+
+    '<button class="btn-primary" onclick="next()" id="nextBtn" aria-label="Next stop">Continue</button>';
+  card.tabIndex = 0;
+}
+
+function exitToMenu(){
+  saveSession();
+  refreshResume();
+  clearTimeout(state._selahT);
+  state.mode = null;
+  document.body.classList.remove('mode-campfire');
+  setScene(skyNow());
+  showScreen('menu');
+}
+
+/* =================== FINISH + PRAYER NOTES =================== */
+const FINISH = {
+  full:{ h:"You made it to the summit.",
+    p:"On a mountain like this one, Jesus let His closest friends see who He really was. You just did a small version of that — the whole trail, from how he's doing to how you can carry him.",
+    it:"Jesus ended His hardest nights praying on a mountainside. End this one the same way: pray over him out loud, and hold onto what he asked you to carry." },
+  quest:{ h:"The quest is complete.",
+    p:"You filled your pack on the way up — light for the path, water, bread, a brother. Everything He gives for the road.",
+    it:"End the way He did: pray, and carry what was entrusted to you." },
+  campfire:{ h:"The fire burns low.",
+    p:"No agenda, no trail — just honest cards under the stars. A campfire becomes a garden of Gethsemane when friends stay awake with each other and pray.",
+    it:"Before the embers die: someone pray over the group, out loud." }
+};
+const BENE = '<p class="bene">“The Lord bless you and keep you; the Lord make His face shine on you.”<span>Numbers 6:24–25</span></p>';
+
+function showFinish(){
+  hidePanel();
+  Snd.chime();
+  buzz([12,60,12,60,24]);
+  $('chapter').textContent = "";
+  $('sectionLabel').textContent = "";
+  $('hint').textContent = "";
+  const f = FINISH[state.mode] || FINISH.full;
+  $('controls').innerHTML = '<button class="btn-primary" onclick="restart()">Start a new climb</button>';
+  card.classList.add('finishCard'); card.classList.remove('flipped');
+  card.tabIndex = -1;
+  card.querySelector('.back').style.display = 'none';
+  const front = card.querySelector('.front');
+  front.classList.remove('wild');
+  front.style.transform = 'none';
+  let extra = '';
+  if(state.mode==='quest'){
+    state.trailName = TNAMES[state.choices.join('-')] || "Summit Brother";
+    const grid = state.pack.map(sec=>{
+      const it = ITEMS[sec];
+      return '<div class="pitem"><div class="pic">'+it.icon.replace(/#ffd98a/g,'#a8762f')+'</div>'+
+        '<b>'+it.name+'</b><span>'+it.ref+'</span></div>';
+    }).join('');
+    extra = '<p class="tname">✦ Trail name earned: '+state.trailName+' ✦</p>'+
+      '<div class="packgrid">'+grid+'</div>';
+  }
+  front.innerHTML =
+    '<div class="finish"><h2>'+f.h+'</h2>'+extra+'<p>'+f.p+'</p><p class="it">'+f.it+'</p>'+
+    '<div class="notebox">'+
+      '<label for="noteName">Name</label>'+
+      '<input id="noteName" name="hisName" autocomplete="off" spellcheck="false" placeholder="Who you climbed with…">'+
+      '<label for="noteText">Prayer request</label>'+
+      '<textarea id="noteText" name="prayerRequest" placeholder="What they asked you to pray for…"></textarea>'+
+      '<button class="save-btn" id="saveNoteBtn" onclick="saveNote()">Save to prayer log</button>'+
+    '</div>'+BENE+'</div>';
+  if(state.mode==='full'){
+    document.querySelectorAll('.map-stop,.map-star').forEach(d=>{d.classList.remove('current');d.classList.add('done');});
+    $('trailFill').style.strokeDashoffset = 0;
+    const p = mapPts[mapPts.length-1];
+    if(p) $('hiker').style.transform = 'translate('+p.x+'px, '+p.y+'px)';
+  }
+  clearSession();
+}
+
+function saveNote(){
+  const name = $('noteName').value.trim();
+  const note = $('noteText').value.trim();
+  if(!name && !note) return;
+  const notes = getNotes();
+  notes.unshift({ name: name||"(no name)", note: note||"—", date: Date.now(), mode: state.mode, title: state.trailName||"" });
+  try{ localStorage.setItem('climb.notes', JSON.stringify(notes)); }catch(e){}
+  const b = $('saveNoteBtn'); b.textContent = "Saved ✓"; b.disabled = true;
+}
+
+function getNotes(){
+  try{ return JSON.parse(localStorage.getItem('climb.notes')||'[]'); }catch(e){ return []; }
+}
+
+function openNotes(){ renderNotes(); showScreen('notes'); }
+function closeNotes(){ showScreen('menu'); }
+
+function renderNotes(){
+  const list = $('notesList');
+  const notes = getNotes();
+  if(!notes.length){
+    list.innerHTML = '<div class="notes-empty">Nothing here yet.<br>Finish a climb and save what he asks you to pray for — it\'ll be kept here.</div>';
+    return;
+  }
+  list.innerHTML = notes.map((n,i)=>{
+    const d = new Date(n.date);
+    const when = d.toLocaleDateString(undefined,{month:'short',day:'numeric'}) + ' · ' +
+      (n.mode==='quest' ? ('Quest'+(n.title?' · '+n.title:'')) :
+       n.mode==='campfire' ? 'Campfire' : 'Full climb');
+    return '<div class="note-card"><div class="who">'+esc(n.name)+'</div>'+
+      '<div class="when">'+when+'</div><div class="what">'+esc(n.note)+'</div>'+
+      '<button class="note-del" onclick="delNote(this,'+i+')" aria-label="Delete note">×</button></div>';
+  }).join('');
+}
+/* two-tap delete: first tap asks, second confirms (auto-cancels after 2.5s) */
+function delNote(btn,i){
+  if(!btn.classList.contains('confirm')){
+    btn.classList.add('confirm');
+    btn.textContent = "Delete?";
+    btn.setAttribute('aria-label','Tap again to confirm delete');
+    clearTimeout(btn._rv);
+    btn._rv = setTimeout(()=>{ btn.classList.remove('confirm'); btn.textContent='×';
+      btn.setAttribute('aria-label','Delete note'); }, 2500);
+    return;
+  }
+  clearTimeout(btn._rv);
+  const notes = getNotes(); notes.splice(i,1);
+  try{ localStorage.setItem('climb.notes', JSON.stringify(notes)); }catch(e){}
+  renderNotes();
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function restart(){
+  clearSession();
+  refreshResume();
+  clearTimeout(state._selahT);
+  state.mode = null; state.t = 0; state.started = false;
+  document.body.classList.remove('mode-campfire');
+  setScene(skyNow());
+  showScreen('menu');
+}
+
+/* =================== SESSION (resume after closing) =================== */
+function saveSession(){
+  if(state.mode!=='full') return;
+  try{ localStorage.setItem('climb.session', JSON.stringify({mode:state.mode, t:state.t, started:state.started})); }catch(e){}
+}
+function clearSession(){ try{ localStorage.removeItem('climb.session'); }catch(e){} }
+function getSession(){
+  try{ return JSON.parse(localStorage.getItem('climb.session')||'null'); }catch(e){ return null; }
+}
+function refreshResume(){
+  const s = getSession();
+  const bar = $('resumeBar');
+  if(s && s.started && TRAILS[s.mode] && TRAILS[s.mode][s.t]){
+    bar.hidden = false;
+    const sec = SECTIONS[TRAILS[s.mode][s.t].s];
+    $('resumeBtn').textContent = "Resume — "+sec.name+" →";
+  } else bar.hidden = true;
+}
+function resumeClimb(){
+  const s = getSession();
+  if(!s) return;
+  startMode(s.mode, s);
+  updateTrail();
+}
+
+/* =================== AMBIENT SOUND (Web Audio, all generated) =================== */
+const Snd = {
+  ctx:null, on:false, master:null, windGain:null, fireGain:null, noise:null, _t:null,
+  ensure(){
+    if(this.ctx) return true;
+    const C = window.AudioContext || window.webkitAudioContext;
+    if(!C) return false;
+    this.ctx = new C();
+    this.master = this.ctx.createGain();
+    this.master.gain.value = 0;
+    this.master.connect(this.ctx.destination);
+    const sr = this.ctx.sampleRate, len = sr*2;
+    const buf = this.ctx.createBuffer(1, len, sr), d = buf.getChannelData(0);
+    for(let i=0;i<len;i++) d[i] = Math.random()*2-1;
+    this.noise = buf;
+    /* wind bed */
+    const src = this.ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+    const f = this.ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=300; f.Q.value=.5;
+    this.windGain = this.ctx.createGain(); this.windGain.gain.value=.14;
+    src.connect(f); f.connect(this.windGain); this.windGain.connect(this.master); src.start();
+    const lfo = this.ctx.createOscillator(), lg = this.ctx.createGain();
+    lfo.frequency.value=.06; lg.gain.value=110;
+    lfo.connect(lg); lg.connect(f.frequency); lfo.start();
+    /* campfire bed: low flame rumble with flicker + soft ember hiss (silent until campfire mode) */
+    this.fireGain = this.ctx.createGain(); this.fireGain.gain.value = 0;
+    this.fireGain.connect(this.master);
+    const fsrc = this.ctx.createBufferSource(); fsrc.buffer = buf; fsrc.loop = true;
+    const fbp = this.ctx.createBiquadFilter(); fbp.type='bandpass'; fbp.frequency.value=170; fbp.Q.value=.7;
+    const flut = this.ctx.createGain(); flut.gain.value=.7;
+    fsrc.connect(fbp); fbp.connect(flut); flut.connect(this.fireGain); fsrc.start();
+    const flfo = this.ctx.createOscillator(), flg = this.ctx.createGain();
+    flfo.frequency.value=7.3; flg.gain.value=.25;
+    flfo.connect(flg); flg.connect(flut.gain); flfo.start();
+    const wob = this.ctx.createOscillator(), wg = this.ctx.createGain();
+    wob.frequency.value=.4; wg.gain.value=2.4;
+    wob.connect(wg); wg.connect(flfo.frequency); wob.start();
+    const hsrc = this.ctx.createBufferSource(); hsrc.buffer = buf; hsrc.loop = true;
+    const hp = this.ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=5200;
+    const hg = this.ctx.createGain(); hg.gain.value=.018;
+    hsrc.connect(hp); hp.connect(hg); hg.connect(this.fireGain); hsrc.start();
+    this.loop();
+    return true;
+  },
+  loop(){
+    const tick = () => {
+      const fire = document.body.classList.contains('mode-campfire');
+      if(this.on && this.ctx){
+        if(fire){
+          this.crackle();
+          if(Math.random()<.1) this.cricket();
+          if(Math.random()<.04) this.owl();
+        } else {
+          if(state.stage<=4 && Math.random()<.55) this.chirp();
+          if(state.stage>=5) this.cricket();
+          if(state.stage>=6 && Math.random()<.12) this.owl();
+        }
+      }
+      this._t = setTimeout(tick, (this.on && fire) ? 160+Math.random()*380 : 2300+Math.random()*2800);
+    };
+    this._t = setTimeout(tick, 1000);
+  },
+  env(g, t, peak, dur){
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(peak, t+.015);
+    g.gain.exponentialRampToValueAtTime(.0001, t+dur);
+  },
+  chirp(){
+    const t = this.ctx.currentTime;
+    const n = 2+Math.floor(Math.random()*2);
+    for(let i=0;i<n;i++){
+      const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+      const f0 = 2500+Math.random()*900;
+      o.frequency.setValueAtTime(f0, t+i*.13);
+      o.frequency.exponentialRampToValueAtTime(f0*.72, t+i*.13+.09);
+      this.env(g, t+i*.13, .05, .12);
+      o.connect(g); g.connect(this.master);
+      o.start(t+i*.13); o.stop(t+i*.13+.14);
+    }
+  },
+  cricket(){
+    const t = this.ctx.currentTime;
+    for(let i=0;i<5;i++){
+      const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+      o.frequency.value = 4300;
+      this.env(g, t+i*.062, .02, .05);
+      o.connect(g); g.connect(this.master);
+      o.start(t+i*.062); o.stop(t+i*.062+.06);
+    }
+  },
+  /* fire detail sounds: sharp snaps, double-snaps, and low log pops */
+  crackle(){
+    const t = this.ctx.currentTime, r = Math.random();
+    if(r < .55){ this.snap(t, 0); }
+    else if(r < .78){ this.snap(t, 0); this.snap(t, .05+Math.random()*.07); }
+    else { this.pop(t); }
+  },
+  snap(t, off){
+    const s = this.ctx.createBufferSource(); s.buffer = this.noise;
+    const f = this.ctx.createBiquadFilter(); f.type='highpass';
+    f.frequency.value = 2400+Math.random()*2600;
+    const g = this.ctx.createGain();
+    this.env(g, t+off, .09+Math.random()*.12, .02+Math.random()*.05);
+    s.connect(f); f.connect(g); g.connect(this.master);
+    s.start(t+off, Math.random()*1.5); s.stop(t+off+.09);
+  },
+  pop(t){
+    const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    const f0 = 110+Math.random()*90;
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(f0*.55, t+.07);
+    this.env(g, t, .15, .09);
+    o.connect(g); g.connect(this.master);
+    o.start(t); o.stop(t+.12);
+  },
+  owl(){
+    const t = this.ctx.currentTime;
+    [0, .5].forEach((off,i)=>{
+      const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+      o.frequency.setValueAtTime(i?302:338, t+off);
+      o.frequency.linearRampToValueAtTime(i?282:318, t+off+.3);
+      const v = this.ctx.createOscillator(), vg = this.ctx.createGain();
+      v.frequency.value = 5.5; vg.gain.value = 6;
+      v.connect(vg); vg.connect(o.frequency); v.start(t+off); v.stop(t+off+.5);
+      g.gain.setValueAtTime(0, t+off);
+      g.gain.linearRampToValueAtTime(.045, t+off+.08);
+      g.gain.linearRampToValueAtTime(.0001, t+off+(i?.46:.34));
+      o.connect(g); g.connect(this.master);
+      o.start(t+off); o.stop(t+off+.55);
+    });
+  },
+  steps(){ /* soft boot crunches when moving along the trail */
+    if(!this.on || !this.ctx) return;
+    const t = this.ctx.currentTime;
+    for(let i=0;i<3;i++){
+      const s = this.ctx.createBufferSource(); s.buffer = this.noise;
+      const f = this.ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=240+Math.random()*120;
+      const g = this.ctx.createGain();
+      this.env(g, t+i*.24, .1-(i*.02), .07);
+      s.connect(f); f.connect(g); g.connect(this.master);
+      s.start(t+i*.24, Math.random()); s.stop(t+i*.24+.1);
+    }
+  },
+  collect(){ /* small bright pluck when an item joins the pack */
+    if(!this.on || !this.ctx) return;
+    const t = this.ctx.currentTime;
+    [740, 988].forEach((fr,i)=>{
+      const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+      o.frequency.value = fr;
+      this.env(g, t+i*.09, .07, .3);
+      o.connect(g); g.connect(this.master);
+      o.start(t+i*.09); o.stop(t+i*.09+.35);
+    });
+  },
+  tick(){
+    if(!this.on || !this.ctx) return;
+    const t = this.ctx.currentTime;
+    const s = this.ctx.createBufferSource(); s.buffer = this.noise;
+    const f = this.ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=850;
+    const g = this.ctx.createGain();
+    this.env(g, t, .09, .07);
+    s.connect(f); f.connect(g); g.connect(this.master);
+    s.start(t, Math.random()); s.stop(t+.1);
+  },
+  chime(){
+    if(!this.on || !this.ctx) return;
+    const t = this.ctx.currentTime;
+    [659.25, 880].forEach((fr,i)=>{
+      const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+      o.frequency.value = fr;
+      g.gain.setValueAtTime(0, t+i*.28);
+      g.gain.linearRampToValueAtTime(.1, t+i*.28+.02);
+      g.gain.exponentialRampToValueAtTime(.0001, t+i*.28+1.4);
+      o.connect(g); g.connect(this.master);
+      o.start(t+i*.28); o.stop(t+i*.28+1.6);
+    });
+  },
+  setScene(){ /* wind picks up near the summit; fire bed fades in around the campfire */
+    if(!this.ctx || !this.windGain) return;
+    const fire = document.body.classList.contains('mode-campfire');
+    const w = fire ? .05 : state.stage>=6 ? .2 : state.stage>=4 ? .16 : .12;
+    const t = this.ctx.currentTime;
+    this.windGain.gain.linearRampToValueAtTime(w, t+1.2);
+    if(this.fireGain) this.fireGain.gain.linearRampToValueAtTime(fire ? .5 : 0, t+1.2);
+  },
+  toggle(){
+    if(!this.ensure()) return;
+    if(this.ctx.state==='suspended') this.ctx.resume();
+    this.on = !this.on;
+    const t = this.ctx.currentTime;
+    this.master.gain.cancelScheduledValues(t);
+    this.master.gain.linearRampToValueAtTime(this.on ? .85 : 0, t+.6);
+    this.paint();
+  },
+  paint(){
+    [$('sndBtn'),$('sndBtnMenu')].forEach(b=>{
+      if(!b) return;
+      b.classList.toggle('muted', !this.on);
+      b.setAttribute('aria-pressed', this.on ? 'true' : 'false');
+      b.setAttribute('aria-label', this.on ? 'Turn ambient sound off' : 'Turn ambient sound on');
+    });
+  }
+};
+
+/* =================== INPUT / A11Y =================== */
+card.addEventListener('click', flip);
+card.addEventListener('keydown', e=>{
+  if(e.key==='Enter' || e.key===' '){ e.preventDefault(); flip(); }
+});
+document.addEventListener('keydown', e=>{
+  if(!$('journey').classList.contains('active')) return;
+  if(e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+  if($('panel').classList.contains('show')) return;
+  if(e.key==='ArrowRight') next();
+  if(e.key==='ArrowLeft') goBack();
+});
+
+/* =================== BOOT =================== */
+buildTrees();
+setScene(skyNow());
+refreshResume();
+Snd.paint();
+</script>
+</body>
+</html>
